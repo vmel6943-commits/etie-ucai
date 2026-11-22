@@ -1,1 +1,43 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><meta name="theme-color" content="#17283d"/><meta name="description" content="拆开午夜邀请函，登上鹅铁U彩。领取专属车票，在皮箱里翻完五份热点情报，再走进夜行车厢，探索一场有秘密的旅程。"/><title>鹅铁U彩</title><link rel="icon" type="image/svg+xml" href="./favicon.svg"/></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#17283d"/>
+<meta name="description" content="拆开午夜邀请函，登上鹅铁U彩。领取专属车票，在皮箱里翻完五份热点情报，再走进夜行车厢，探索一场有秘密的旅程。"/>
+<title>鹅铁U彩</title>
+<link rel="icon" type="image/svg+xml" href="./favicon.svg"/>
+<!-- 启动画面：脚本与配乐还在下载时先给一个“正在登车”，避免长时间黑屏。React 首次渲染会清空 #root。 -->
+<style>
+  #root{min-height:100vh}
+  .boot{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:12px;padding:24px;
+        background:radial-gradient(circle at 50% 38%,#1d3550 0%,#132234 45%,#0a1420 100%);
+        color:#f2e2c6;text-align:center;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+  .boot-seal{width:64px;height:64px;border-radius:50%;border:1px solid #c8a87588;display:grid;place-items:center;
+             background:#c8a87514;color:#e6c489;font-size:26px;letter-spacing:.08em}
+  .boot-title{margin:0;font-size:1.55rem;font-weight:600;letter-spacing:.34em;text-indent:.34em}
+  .boot-sub{margin:0;font-size:.8rem;letter-spacing:.22em;color:#b9a888}
+  .boot-track{position:relative;width:min(300px,72vw);height:2px;margin:6px 0 2px;
+              background:linear-gradient(90deg,transparent,#c8a87555,transparent)}
+  .boot-track i{position:absolute;top:-4px;left:0;width:10px;height:10px;border-radius:50%;
+                background:#e6c489;box-shadow:0 0 12px #e6c489aa;animation:boot-run 2.4s cubic-bezier(.5,0,.5,1) infinite}
+  @keyframes boot-run{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(100% - 10px);opacity:0}}
+  .boot-note{margin:0;font-size:.78rem;line-height:1.7;color:#9c907c;max-width:22em}
+  @media (prefers-reduced-motion: reduce){.boot-track i{animation:none;left:calc(50% - 5px)}}
+  noscript p{margin:16px 0 0;color:#e6c489}
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="boot" role="status" aria-live="polite">
+    <div class="boot-seal" aria-hidden="true">鵝</div>
+    <p class="boot-title">鹅铁U彩</p>
+    <p class="boot-sub">G-07 · 正在检票登车</p>
+    <div class="boot-track" aria-hidden="true"><i></i></div>
+    <p class="boot-note">首次打开要加载场景与六首配乐，请稍等几秒。</p>
+    <noscript><p>这个网页需要开启 JavaScript 才能登车。</p></noscript>
+  </div>
+</div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
