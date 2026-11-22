@@ -1,0 +1,38 @@
+.coke-report { color:#3c3023; background:#f4e7cb; border:6px double #aa8551; border-radius:13px; padding:20px; box-shadow:inset 0 0 0 2px #f9efdb; font-family:'Songti SC','SimSun',serif; }
+.coke-report__masthead { text-align:center; border-bottom:2px solid #bc9965; padding-bottom:10px; }
+.coke-report__masthead span { color:#947043; font:600 .63rem Georgia,serif; letter-spacing:.12em; }
+.coke-report__masthead h2 { color:#493422; font-size:2rem; margin:3px 0 0; }
+.coke-report__headline { margin:14px 0; padding:11px 15px; border:3px double #aa8551; border-radius:9px; background:#f4e4c3; color:#493422; text-align:center; font-size:1.27rem; line-height:1.4; }
+.coke-report__columns { display:grid; grid-template-columns:1.1fr 1fr; gap:16px; align-items:start; }
+.coke-report__visual { min-width:0; }
+.coke-report__film { position:relative; display:block; overflow:hidden; border:3px solid #ae8a57; border-radius:9px; aspect-ratio:16/9; background:#342b24; }
+.coke-report__film img { width:100%; height:100%; object-fit:cover; display:block; }
+.coke-report__film::after { content:''; position:absolute; inset:0; background:linear-gradient(transparent 45%,#17100ab0); pointer-events:none; }
+.coke-report__play { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:grid; place-items:center; width:52px; height:52px; border:2px solid #f8e6bd; border-radius:50%; background:#13283bd9; color:#f4d49b; font-size:19px; padding-left:3px; z-index:1; }
+.coke-report__film-label { position:absolute; bottom:9px; left:11px; right:8px; color:white; font:600 .67rem sans-serif; z-index:1; }
+.coke-report__credit { margin:7px 2px 0; color:#80694c; font-size:.7rem; }
+.coke-report__text { display:grid; gap:12px; }
+.coke-report__paper { border:3px double #b38e5a; border-radius:9px; background:#f9eed8aa; padding:14px 16px; }
+.coke-report__paper h4 { margin:0 0 9px; color:#704d2b; font-size:1rem; }
+.coke-report__paper p { margin:0 0 9px; font-size:.88rem; line-height:1.85; }
+.coke-report__paper p:last-child { margin-bottom:0; }
+.coke-report__prompt { background:#ead7b5; }
+.coke-report__prompt p { font-weight:700; }
+.coke-report__button,.coke-report__secondary { min-height:44px; border:1px solid #9b7847; border-radius:3px; padding:9px 16px; cursor:pointer; font-weight:700; }
+.coke-report__button { color:#f9eddb; background:#183146; box-shadow:inset 0 0 0 2px #c1a06a66; }
+.coke-report__button:hover { background:#284a5e; }
+.coke-report__button:focus-visible,.coke-report__film:focus-visible,.coke-report__secondary:focus-visible { outline:3px solid #a65d29; outline-offset:3px; }
+.coke-report__trace { border-top:1px solid #b38e5a; margin-top:18px; padding-top:15px; }
+.coke-report__trace-head span,.coke-report__version small { color:#8b6a42; font:700 .72rem sans-serif; }
+.coke-report__trace-head h4 { margin:5px 0 12px; font-size:1.1rem; }
+.coke-report__versions { display:grid; gap:9px; margin-bottom:12px; }
+.coke-report__version { border-left:3px solid #aa8551; background:#fff7e999; padding:11px 14px; }
+.coke-report__version p { margin:5px 0; line-height:1.7; }
+.coke-report__note { display:block; color:#6d604d; font-size:.76rem; line-height:1.6; }
+.coke-report__version a,.coke-report__sources a { color:#20495c; font-size:.77rem; text-decoration:underline; }
+.coke-report__truth { padding:14px; border:1px solid #a88a59; background:#e6ddc3; }
+.coke-report__truth h4 { margin:0 0 8px; color:#274b42; }
+.coke-report__truth p { line-height:1.8; margin:7px 0; font-size:.88rem; }
+.coke-report__sources { display:flex; flex-wrap:wrap; gap:15px; margin:10px 0; }
+.coke-report__secondary { color:#5a4934; background:transparent; }
+@media(max-width:700px){.coke-report{padding:12px;border-width:5px}.coke-report__masthead h2{font-size:1.65rem}.coke-report__headline{font-size:1.08rem;padding:10px}.coke-report__columns{grid-template-columns:1fr;gap:12px}.coke-report__paper{padding:13px}.coke-report__paper p{font-size:.9rem}.coke-report__button{width:100%}}

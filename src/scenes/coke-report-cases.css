@@ -1,0 +1,168 @@
+/* =============================================================================
+   列车专报 · 多份情报共用的新增零件
+   -----------------------------------------------------------------------------
+   只新增样式，不修改 coke-report.css 中的任何既有规则，保证情报 01 原样不变。
+   类名前缀统一用 rp-，避免与项目其它样式冲突。
+   ========================================================================== */
+
+/* 情报切换：像档案夹上的分隔标签 */
+.coke-report .rp-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: -4px 0 12px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #c3a273;
+}
+
+.coke-report .rp-tab {
+  min-height: 36px;
+  padding: 6px 13px;
+  border: 1px solid #b99a68;
+  border-bottom-color: transparent;
+  border-radius: 5px 5px 0 0;
+  background: #eadfc4;
+  color: #755a37;
+  font: 700 .78rem/1.2 'Songti SC', 'SimSun', serif;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: background .16s ease, color .16s ease, border-color .16s ease;
+}
+
+.coke-report .rp-tab:hover {
+  background: #f3e9d2;
+  color: #4a3521;
+}
+
+.coke-report .rp-tab.is-active {
+  background: #f9efd9;
+  color: #2f2317;
+  border-color: #9b7847;
+  box-shadow: 0 -2px 0 #9b7847 inset;
+}
+
+.coke-report .rp-tab:focus-visible {
+  outline: 3px solid #a65d29;
+  outline-offset: 2px;
+}
+
+/* 情报 02：静态广告图，不裁切、不带播放按钮 */
+.coke-report .rp-still {
+  aspect-ratio: auto;
+  background: #f7efe0;
+}
+
+.coke-report .rp-still img {
+  height: auto;
+  object-fit: contain;
+}
+
+/* 情报 03：没有报道截图，用排版化的「验证档案」代替 */
+.coke-report .rp-clipping {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 20px 16px;
+  border: 3px solid #ae8a57;
+  border-radius: 9px;
+  background:
+    repeating-linear-gradient(0deg, #00000008 0 1px, transparent 1px 5px),
+    linear-gradient(160deg, #fbf3e1, #efe2c6);
+  box-shadow: inset 0 0 0 2px #ffffff88;
+}
+
+.coke-report .rp-clipping__kicker {
+  color: #8a6b41;
+  font: 700 .62rem/1.4 Georgia, serif;
+  letter-spacing: .18em;
+}
+
+.coke-report .rp-clipping__big {
+  color: #1d3a44;
+  font: 700 2.05rem/1.05 Georgia, 'Songti SC', serif;
+  letter-spacing: .02em;
+}
+
+.coke-report .rp-clipping__unit {
+  color: #6d5a3f;
+  font: 700 .8rem/1.4 'Songti SC', 'SimSun', serif;
+  letter-spacing: .16em;
+}
+
+.coke-report .rp-clipping__lines {
+  margin: 9px 0 0;
+  padding: 10px 0 0 17px;
+  border-top: 1px dashed #b79a6c;
+  display: grid;
+  gap: 6px;
+  color: #4a3a28;
+  font-size: .78rem;
+  line-height: 1.65;
+}
+
+/* 真相末尾的讨论问题 */
+.coke-report .rp-discussion {
+  margin: 12px 0 4px;
+  padding: 12px 14px;
+  border: 1px solid #a88a59;
+  border-left: 4px solid #8a6b41;
+  border-radius: 3px;
+  background: #f7eeda;
+}
+
+.coke-report .rp-discussion h5 {
+  margin: 0 0 8px;
+  color: #4b3927;
+  font-size: .93rem;
+  letter-spacing: .04em;
+}
+
+.coke-report .rp-discussion ol {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 7px;
+}
+
+.coke-report .rp-discussion li {
+  color: #3f3221;
+  font-size: .86rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 700px) {
+  .coke-report .rp-tabs {
+    gap: 5px;
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+  }
+
+  .coke-report .rp-tab {
+    flex: 1 1 auto;
+    min-height: 34px;
+    padding: 5px 8px;
+    font-size: .7rem;
+    letter-spacing: .02em;
+    text-align: center;
+  }
+
+  .coke-report .rp-clipping {
+    padding: 13px 14px;
+  }
+
+  .coke-report .rp-clipping__big {
+    font-size: 1.55rem;
+  }
+
+  .coke-report .rp-clipping__lines {
+    font-size: .75rem;
+  }
+
+  .coke-report .rp-discussion {
+    padding: 10px 11px;
+  }
+
+  .coke-report .rp-discussion li {
+    font-size: .82rem;
+  }
+}

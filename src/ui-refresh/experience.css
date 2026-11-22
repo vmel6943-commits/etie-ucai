@@ -1,0 +1,164 @@
+/* Final interaction layer. Existing story and task artwork retain their coordinates. */
+.game {
+  --top-height: 76px;
+  --bottom-height: 76px;
+  --ui-font: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', system-ui, sans-serif;
+  height: 100dvh;
+  min-height: 360px;
+  font-family: var(--ui-font);
+}
+.game button, .game input, .game select, .game textarea { font-family: inherit; }
+.game .topbar { height: var(--top-height); min-height: var(--top-height); padding-inline: clamp(16px, 3vw, 44px); }
+.game .bottom-bar { height: var(--bottom-height); min-height: var(--bottom-height); }
+.game .brand .brand-name { font-family: var(--ui-font); font-weight: 650; font-size: 1.2rem; letter-spacing: .06em; }
+.game .header-actions > .icon-button { min-width: 44px; min-height: 44px; }
+.game .modal-scrim { inset: var(--top-height) 0 var(--bottom-height); padding: clamp(10px, 2.5vw, 28px); }
+.game .panel { max-height: 100%; border-radius: 8px; }
+.game .panel-head { flex: 0 0 auto; gap: 12px; padding: 18px 24px; }
+.game .panel-head > div { min-width: 0; }
+.game .panel-head h2 { font-family: var(--ui-font); font-size: clamp(1.15rem, 1.8vw, 1.65rem); letter-spacing: .025em; line-height: 1.4; overflow-wrap: anywhere; }
+.game .panel-head .eyebrow { line-height: 1.7; font-size: .72rem; letter-spacing: .08em; }
+.game .panel-body { padding: clamp(18px, 2.5vw, 32px); overflow-x: hidden; overflow-y: auto; scroll-padding-block: 20px; }
+.game .panel-body :where(p, li) { overflow-wrap: anywhere; }
+.game .panel-body :where(input, textarea, select) { font-size: max(16px, 1rem); }
+.game .panel-body :where(button, a, input, select, textarea):focus-visible { outline: 3px solid #38695c; outline-offset: 3px; }
+.game .panel-body :where(button, a) { touch-action: manipulation; }
+.game .panel-body :where(button):disabled { cursor: default; opacity: .5; }
+.game .panel-body .button { min-height: 48px; padding: 11px 20px; font-size: .95rem; }
+.game .panel-body .button:not(.secondary) { background: linear-gradient(150deg, #315d4e, #193f35); border-color: #9c895a; color: #fff2d2; }
+.game .panel-body .button.secondary { background: #fffbef80; color: #354e43; }
+
+/* All scene docks take part in one flow. ResizeObserver reserves their actual height. */
+.game .world .scene-stage { bottom: var(--scene-dock, 0px); }
+.scene-controls { position: absolute; z-index: 7; bottom: 12px; left: 50%; transform: translateX(-50%); width: min(1280px, calc(100% - 40px)); display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.exploration-help { margin: 0; color: #ead8b5; font-size: .875rem; line-height: 1.7; text-align: center; text-shadow: 0 2px 6px #000; }
+.scene-controls:empty { display: none; }
+.scene-controls > * { pointer-events: auto; }
+.game .scene-controls .journey-cue,
+.game .scene-controls .material-tray,
+.game .scene-controls .compartment-nav { position: relative; inset: auto; transform: none; width: 100%; margin: 0; }
+.game .scene-controls .journey-cue { display: flex; justify-content: space-between; gap: 20px; padding: 12px 16px; background: linear-gradient(110deg, #172f29f5, #12251ff5); border-color: #c4a77480; }
+.game .scene-controls .journey-cue-copy { min-width: 0; }
+.game .journey-cue-copy p { font-size: .875rem; line-height: 1.7; color: #f4e7d0; }
+.game .scene-controls .story-guide { position: relative; inset: auto; flex-shrink: 0; min-height: 54px; }
+.game .scene-controls .compartment-nav { justify-content: center; background: #152f29f5; border-radius: 5px; overflow-x: auto; }
+.game .compartment-nav > button { min-height: 46px; flex: 1; font: 500 .875rem/1.5 var(--ui-font); white-space: nowrap; }
+.game .compartment-nav > button.active { background: #dac49324; color: #ffdf9b; box-shadow: inset 0 -2px #dfbd7e; }
+.game .coke-material-tray { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 10px; padding: 12px; background: linear-gradient(110deg, #172f29fa, #192c26fa); }
+.game .coke-material-tray .material-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.game .coke-material-tray .material-tabs > button { min-height: 60px; padding: 7px 5px; font: 500 .875rem/1.5 var(--ui-font); white-space: normal; border-radius: 4px; }
+.game .coke-material-tray .material-next { margin: 0; min-height: 48px; font-size: .875rem; }
+.game .coke-material-tray .material-read { color: #e7efd4; background: #79916b22; }
+.material-label-break { display: none; }
+.game .material-tray-heading small { font-variant-numeric: tabular-nums; }
+.game .hotspot { min-width: 48px; min-height: 48px; }
+.game .hotspot-label { font: 500 .8125rem/1.5 var(--ui-font); letter-spacing: .02em; width: max-content; max-width: 200px; flex-shrink: 0; white-space: nowrap; text-align: center; }
+.game .hotspot-edge-right .hotspot-label { transform: translateX(-25%); }
+.game .hotspot-edge-left .hotspot-label { transform: translateX(25%); }
+.game .hotspot-primary .hotspot-label { background: #f4dc9f; color: #203e33; border-color: #fff0bf; font-weight: 650; }
+.game .scene-back { min-height: 44px; padding: 8px 13px; font-size: .875rem; }
+.game .scene-caption { max-width: min(520px, 75%); background: radial-gradient(ellipse at left, #101d2bbc, transparent 75%); padding: 8px 20px 14px 0; }
+.game .scene-caption.caption-after-back { top: 70px; }
+.game .scene-caption h1 { font: 600 clamp(1.2rem, 2vw, 1.8rem)/1.5 var(--ui-font); letter-spacing: .035em; }
+.game .cinematic-dialogue { max-height: calc(100% - 76px); overflow-y: auto; scrollbar-width: thin; }
+.game .cinematic-dialogue .dialogue-box { border-radius: 7px; background: linear-gradient(125deg, #173d33fa, #172e29fa); box-shadow: inset 0 0 0 4px #d6b27616, 0 16px 44px #080f0a80; }
+.game .cinematic-dialogue .dialogue-head { align-items: center; }
+.game .cinematic-dialogue .speaker-name strong { font-size: 1rem; letter-spacing: .04em; color: #f5d49a; }
+.game .cinematic-dialogue .dialogue-text { font: 400 clamp(1rem, 1.35vw, 1.18rem)/1.95 var(--ui-font); color: #fff1d8; min-height: 3.9em; }
+.game .cinematic-dialogue .dialogue-tools > button { min-width: 44px; min-height: 44px; color: #e2d6bd; }
+.game .dialogue-next { min-height: 46px; background: #ecd6a7; color: #1e3d31; font-size: .95rem; font-weight: 600; }
+.game .dialogue-next:hover { background: #ffebbd; }
+.game .cinematic-dialogue .dialogue-choices > button { min-height: 48px; text-align: left; font-size: .95rem; }
+.game .toast { pointer-events: auto; bottom: calc(var(--bottom-height) + 16px); border-radius: 6px; font-size: .9rem; }
+.game .toast > button { min-width: 44px; min-height: 44px; flex-shrink: 0; }
+.game .scene-load-error { position: absolute; inset: 0; z-index: 5; background: #14251fef; color: #fff1d8; display: flex; flex-direction: column; gap: 20px; justify-content: center; align-items: center; text-align: center; padding: 24px; }
+.game .opening h1 { font-family: var(--ui-font); font-weight: 750; letter-spacing: .03em; font-size: clamp(3rem, 6vw, 6.5rem); white-space: nowrap; }
+.game .opening .opening-credit { font: 500 .875rem/1.8 var(--ui-font); letter-spacing: .07em; }
+.game .bottom-bar nav > button { font-family: var(--ui-font); letter-spacing: .02em; min-height: 48px; }
+
+.game.reduced-motion *, .game.reduced-motion *::before, .game.reduced-motion *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+
+@media (max-width: 1050px) {
+  .game .coke-material-tray { grid-template-columns: 1fr auto auto; }
+  .game .coke-material-tray .material-tabs { grid-column: 1 / -1; grid-row: 2; }
+  .game .coke-material-tray .material-tray-heading { min-width: 0; }
+}
+@media (max-width: 700px) {
+  .game { --top-height: 64px; --bottom-height: calc(70px + env(safe-area-inset-bottom)); }
+  .game .topbar { padding-inline: 10px; }
+  .game .brand { gap: 6px; }
+  .game .brand .brand-name { font-size: 1rem; }
+  .game .brand small { font-size: .5rem; letter-spacing: .08em; }
+  .game .header-actions { gap: 0; }
+  .game .header-actions > .icon-button { min-width: 40px; min-height: 44px; }
+  .game .header-actions .music-status, .game .saved-status { display: none; }
+  .game .modal-scrim { padding: 7px; }
+  .game .panel { height: auto; }
+  .game .panel-head { padding: 12px 15px; }
+  .game .ui-ticket__details strong { font-size: .875rem; }
+  .game .ui-ticket__origin strong { font-size: .875rem; }
+  .game .ui-ticket__date { font-size: .7rem; }
+  .game .panel-body { padding: 18px 16px 24px; }
+  .game .panel-head h2 { font-size: 1.2rem; }
+  .game .panel-head .eyebrow { font-size: .68rem; }
+  .scene-controls { bottom: 10px; width: calc(100% - 20px); gap: 8px; }
+  .game .scene-controls .journey-cue { display: grid; grid-template-columns: 1fr; gap: 8px; padding: 10px; }
+  .game .journey-cue-copy p { font-size: .8125rem; line-height: 1.65; }
+  .game .scene-controls .story-guide { min-width: 0; width: 100%; min-height: 50px; padding: 9px 13px; }
+  .game .story-guide strong { font-size: 1rem; }
+  .game .scene-controls .compartment-nav { flex-wrap: nowrap; justify-content: start; }
+  .game .compartment-nav > button { flex: 1; min-width: 0; min-height: 44px; font-size: .8125rem; padding: 8px 4px; }
+  .game .coke-material-tray { gap: 8px; padding: 10px; grid-template-columns: 1fr 1fr; }
+  .game .coke-material-tray .material-tray-heading { grid-column: 1 / -1; grid-row: 1; }
+  .game .coke-material-tray .material-tray-heading > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; }
+  .game .coke-material-tray .material-tray-heading > svg { display: none; }
+  .game .coke-material-tray .material-tray-heading strong { font-size: .875rem; }
+  .game .coke-material-tray .material-tray-heading small { font-size: .75rem; white-space: normal; }
+  .game .coke-material-tray .material-tabs { grid-row: 2; gap: 5px; }
+  .game .coke-material-tray .material-tabs > button { min-height: 70px; font-size: .875rem; flex-direction: column; padding: 6px 4px; }
+  .game .coke-material-tray .material-tabs > button > span { max-width: none; white-space: nowrap; letter-spacing: 0; }
+  .material-label-break { display: initial; }
+  .game .coke-material-tray .material-next { grid-row: 3; grid-column: auto; min-height: 44px; padding: 8px; }
+  .game .coke-material-tray:has(.coke-material-tray__next) .material-next { grid-column: 1 / -1; }
+  .game .scene-caption { left: 14px; max-width: 78%; padding-top: 4px; }
+  .game .scene-caption h1 { font-size: 1.25rem; line-height: 1.5; }
+  .game .scene-caption.caption-after-back { top: 62px; }
+  .game .scene-caption .eyebrow { font-size: .75rem; letter-spacing: .01em; }
+  .game .scene-back { top: 10px; left: 12px; }
+  .game .hotspot .hotspot-label { font-size: .8125rem; max-width: 130px; letter-spacing: 0; }
+  .game .hotspot-primary .hotspot-label { opacity: 1; }
+  .game .scene-workbench .hotspot-label, .game .act-3:not(.show-hints) .hotspot-label { opacity: 0; }
+  .game .act-3 .hotspot:focus-visible .hotspot-label { opacity: 1; }
+  .game .scene-workbench.show-hints .hotspot-label, .game .scene-workbench .hotspot:focus-visible .hotspot-label { opacity: 1; }
+  .game .cinematic-dialogue { left: 10px; right: 10px; bottom: 10px; max-height: calc(100% - 66px); }
+  .game .cinematic-dialogue .dialogue-box { padding: 13px 14px; }
+  .game .cinematic-dialogue .speaker { gap: 7px; min-width: 0; }
+  .game .cinematic-dialogue .speaker-medallion { width: 30px; height: 34px; flex-shrink: 0; }
+  .game .cinematic-dialogue .speaker-name strong { font-size: .95rem; letter-spacing: 0; }
+  .game .cinematic-dialogue .dialogue-head { gap: 4px; flex-wrap: wrap; }
+  .game .cinematic-dialogue .dialogue-tools { margin-left: auto; }
+  .game .cinematic-dialogue .dialogue-tools > button { min-width: 36px; min-height: 44px; }
+  .game .cinematic-dialogue .dialogue-text { font-size: 1rem; line-height: 1.9; margin: 8px 0 16px; }
+  .game .cinematic-dialogue .dialogue-choices { flex-direction: column; }
+  .game .opening h1 { font-size: clamp(2.2rem, 11vw, 4rem); }
+  .game .opening .opening-credit { font-size: .8125rem; letter-spacing: .02em; }
+  .game .bottom-bar { padding-inline: 3px; }
+  .game .bottom-bar nav { flex: 1; justify-content: space-around; min-width: 0; }
+  .game .bottom-bar nav > button { min-width: 0; padding-inline: 7px; font-size: .75rem; }
+  .game .hint-button { min-width: 44px; min-height: 48px; }
+  .game .hint-button > span { display: none; }
+  .game .toast { width: calc(100% - 24px); max-width: none; padding: 10px 12px; font-size: .875rem; gap: 10px; }
+  .game :is(.ad-opinion__background p, .ad-opinion__detail, .puzzle__story p, .puzzle__card-text, .crisis__alert p, .crisis__comment) { font-size: 1rem; line-height: 1.85; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .game *, .game *::before, .game *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+.game .workbench-done__seal { color: #806035; display: inline-grid; place-items: center; }
+.game .workbench-done__card p { font-size: 1rem; line-height: 1.85; }
+
+.investigation-checklist { list-style: none; padding: 0; display: grid; gap: 8px; }
+.investigation-checklist li { display: flex; justify-content: space-between; gap: 14px; padding: 8px 0; border-bottom: 1px solid #a28b5c40; }
+.investigation-checklist strong { color: #315b45; white-space: nowrap; }
+.investigation-record .journal-finding h4 { margin: 0 0 8px; }
+.investigation-record .journal-finding p { font-size: 1rem; line-height: 1.8; }

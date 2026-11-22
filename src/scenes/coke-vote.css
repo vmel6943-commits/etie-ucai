@@ -1,0 +1,222 @@
+/* 可口可乐情报 · 判断投票（首次内嵌 / 再次面板）
+   独立文件，不修改 coke-report.css、coke-materials.css 的任何既有规则。 */
+
+.coke-vote {
+  color: #3c3329;
+}
+
+/* 内嵌在专报里时用报纸语言：双线框 + 米色纸 */
+.coke-vote--first {
+  margin: 14px 0 0;
+  padding: 14px 16px;
+  border: 3px double #b38e5a;
+  border-radius: 9px;
+  background: #f7ecd6;
+}
+
+.coke-vote--final {
+  padding: 2px 0 0;
+}
+
+.coke-vote__question {
+  margin: 0 0 6px;
+  color: #493422;
+  font-family: Georgia, 'Songti SC', 'SimSun', serif;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.coke-vote__hint {
+  margin: 0 0 13px;
+  color: #6d604d;
+  font-size: .82rem;
+  line-height: 1.7;
+}
+
+.coke-vote__options {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.coke-vote__option {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 10px 13px;
+  text-align: left;
+  border: 1px solid #b99a68;
+  border-radius: 4px;
+  background: #fdf8ec;
+  color: #3c3329;
+  font-size: .92rem;
+  line-height: 1.55;
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.coke-vote__option:hover {
+  border-color: #9b7847;
+  background: #fffaf0;
+}
+
+.coke-vote__option:focus-visible {
+  outline: 3px solid #a65d29;
+  outline-offset: 2px;
+}
+
+/* 选中：复古金色描边 + 勾选 */
+.coke-vote__option.is-selected {
+  padding: 9px 12px;
+  border: 2px solid #b08b4f;
+  background: #fdf4df;
+  box-shadow: inset 0 0 0 1px #c8a87580;
+}
+
+.coke-vote__badge {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #b99a68;
+  border-radius: 50%;
+  background: #f3e7ce;
+  color: #755a37;
+  font: 700 .78rem/1 Georgia, serif;
+}
+
+.coke-vote__option.is-selected .coke-vote__badge {
+  border-color: #8e7240;
+  background: #b08b4f;
+  color: #fdf6e7;
+}
+
+/* 把握程度 */
+.coke-vote__confidence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.coke-vote__label {
+  color: #6d604d;
+  font-size: .78rem;
+  letter-spacing: .08em;
+}
+
+.coke-vote__scale {
+  display: flex;
+  gap: 5px;
+}
+
+.coke-vote__scale button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #b99a68;
+  border-radius: 50%;
+  background: #fdf8ec;
+  color: #755a37;
+  font: 700 .82rem/1 Georgia, serif;
+  cursor: pointer;
+}
+
+.coke-vote__scale button.is-selected {
+  border-color: #8e7240;
+  background: #b08b4f;
+  color: #fdf6e7;
+  box-shadow: 0 0 0 2px #c8a8754d;
+}
+
+.coke-vote__tip {
+  color: #8a6b41;
+  font-size: .76rem;
+}
+
+.coke-vote__submit {
+  min-height: 42px;
+  padding: 9px 18px;
+  border: 1px solid #9b7847;
+  border-radius: 3px;
+  background: #183146;
+  color: #f9eddb;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 2px #c1a06a66;
+  transition: background .16s ease, opacity .16s ease;
+}
+
+.coke-vote__submit:hover:not(:disabled) {
+  background: #284a5e;
+}
+
+.coke-vote__submit:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+
+.coke-vote__submit:focus-visible {
+  outline: 3px solid #a65d29;
+  outline-offset: 2px;
+}
+
+.coke-vote__done {
+  padding: 13px 15px;
+  border: 1px solid #a88a59;
+  border-radius: 4px;
+  background: #f7eed8;
+}
+
+.coke-vote__done h4 {
+  margin: 0 0 7px;
+  color: #274b42;
+  font-size: .98rem;
+}
+
+.coke-vote__done p {
+  margin: 0 0 9px;
+  font-size: .88rem;
+  line-height: 1.75;
+}
+
+.coke-vote__feedback {
+  color: #3f5a4c;
+}
+
+@media (max-width: 700px) {
+  .coke-vote--first {
+    padding: 12px 13px;
+  }
+
+  .coke-vote__question {
+    font-size: .98rem;
+  }
+
+  .coke-vote__option {
+    padding: 9px 11px;
+    font-size: .88rem;
+  }
+
+  .coke-vote__option.is-selected {
+    padding: 8px 10px;
+  }
+
+  .coke-vote__submit {
+    width: 100%;
+  }
+
+  .coke-vote__scale button {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coke-vote__option,
+  .coke-vote__submit {
+    transition: none;
+  }
+}

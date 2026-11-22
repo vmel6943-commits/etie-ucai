@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {existsSync} from 'node:fs';
+import {initialState,canRevote,canFinish,canOpenSuitcase,validateImport,voteFeedback,type Vote,type SceneId} from '../src/game/model.ts';
+import {boardingAction,dialogueBelongsToScene} from '../src/game/presentation.ts';
+import {musicForScene,musicTracks} from '../src/data/music.ts';
+const vote:Vote={choice:'A',confidence:2,influences:[],at:'2026-11-22T00:00:00Z'};
+test('可口可乐完整消息解锁皮箱，其他情报和旧投票不会提前开箱',()=>{const g=initialState();assert.equal(canOpenSuitcase(g),false);g.flags.push('coke-truth-revealed');assert.equal(canOpenSuitcase(g),true);g.flags=['report-miniso-revealed'];g.firstVote=vote;assert.equal(canOpenSuitcase(g),false);});
+test('返回、前进与同场景重新进入都会让旧对白失效，旧回调不再推进剧情',()=>{const old={scene:'informant' as SceneId,epoch:4};assert.equal(dialogueBelongsToScene(old,'informant',4),true);assert.equal(dialogueBelongsToScene(old,'platform',4),false);assert.equal(dialogueBelongsToScene(old,'informant',5),false);assert.equal(dialogueBelongsToScene(null,'informant',4),false);});
+test('第一幕每处始终有明确的继续入口，领票不依赖编号或道具解谜',()=>{const g=initialState();for(const scene of ['desk','station','hall','machine','gate','platform','carriage']as SceneId[]){g.scene=scene;assert.ok(boardingAction(g),scene);}g.scene='machine';assert.equal(boardingAction(g),'领取我的车票');g.scene='hall';g.flags=['briefed'];assert.equal(boardingAction(g),'领取我的车票');});
+test('启程、调查、夜行、餐车与尾声使用不同音轨，所有音频随包提供',()=>{assert.equal(musicForScene('desk'),'invitation');assert.equal(musicForScene('hall'),'departure');assert.equal(musicForScene('workbench'),'investigation');assert.equal(musicForScene('corridor'),'night');assert.equal(musicForScene('dining'),'dining');assert.equal(musicForScene('end'),'finale');assert.equal(musicForScene('journal',true),'finale');for(const track of Object.values(musicTracks))assert.ok(existsSync(new URL('../public/'+track.src,import.meta.url)),track.src);assert.equal(new Set(Object.values(musicTracks).map(t=>t.src)).size,6);});
+test('观点与把握程度分别反馈，不给立场判对错',()=>{assert.deepEqual(voteFeedback(vote,{...vote,choice:'C',confidence:4}),{kind:'保留判断',confidence:'把握程度提高了'});assert.equal(voteFeedback(vote,{...vote,confidence:1}).kind,'判断保持一致');assert.equal(voteFeedback(vote,{...vote,choice:'B'}).kind,'判断发生变化');});
+test('新的剧情体验兼容既有存档，并拒绝损坏结构',()=>{const g=initialState();assert.equal(validateImport(g),true);g.settings.muted=true;g.settings.volume=.35;assert.equal(validateImport(g),true);for(const input of [null,{},[],{...g,settings:null},{...g,version:9},{...g,meals:'broken'},{...g,firstVote:{choice:'D'}}])assert.equal(validateImport(input),false);});

@@ -1,0 +1,143 @@
+.coke-material-tray .material-tabs { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.coke-material { color:#3c3329; }
+.coke-material h3 { margin:6px 0 16px; font-family:Georgia,'Songti SC',serif; font-size:1.4rem; }
+.coke-material p,.coke-material li { font-size:1rem; line-height:1.9; margin:10px 0; }
+.coke-material a { color:#234d61; text-decoration:underline; }
+.coke-material__image { position:relative; display:block; max-width:600px; overflow:hidden; border:2px solid #b18a55; border-radius:4px; }
+.coke-material__image img { display:block; width:100%; }
+.coke-material__image span { position:absolute; left:0; right:0; bottom:0; padding:12px; color:white; background:#17283dd9; text-align:center; text-decoration:none; }
+@media(max-width:700px) { .coke-material-tray .material-tabs { grid-template-columns:repeat(4,minmax(0,1fr)); } .coke-material-tray .material-tabs>button { flex-direction:column; min-height:50px; font-size:.7rem; white-space:normal; } }
+
+/* 五项全完成后的「进入下一场景」：金色 + 轻微发光 */
+.coke-material-tray .coke-material-tray__next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  border-color: #8e7240;
+  background-image: linear-gradient(180deg, #f6e0b0, #dcb97e 46%, #c19c5e);
+  color: #17283d;
+  box-shadow:
+    inset 0 1px 0 #fffdf799,
+    inset 0 -2px 0 #8e724055,
+    0 8px 18px -10px #000c,
+    0 0 18px -2px #e6c489;
+  animation: tray-next-glow 2.6s ease-in-out infinite;
+}
+
+.coke-material-tray .coke-material-tray__next:hover {
+  filter: brightness(1.05);
+}
+
+@keyframes tray-next-glow {
+  0%, 100% { box-shadow: inset 0 1px 0 #fffdf799, inset 0 -2px 0 #8e724055, 0 8px 18px -10px #000c, 0 0 12px -3px #e6c489; }
+  50% { box-shadow: inset 0 1px 0 #fffdf799, inset 0 -2px 0 #8e724055, 0 8px 18px -10px #000c, 0 0 26px 2px #f0d59b; }
+}
+
+/* 五项完成提示 */
+.workbench-done {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: #0a1018cc;
+  animation: workbench-fade .22s ease both;
+}
+
+@keyframes workbench-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.workbench-done__card {
+  width: min(500px, 100%);
+  max-height: 86vh;
+  overflow: auto;
+  padding: 22px 22px 18px;
+  border: 6px double #aa8551;
+  border-radius: 12px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23p)' opacity='.4'/%3E%3C/svg%3E"),
+    #f4e7cb;
+  background-blend-mode: multiply, normal;
+  box-shadow: 0 24px 70px -24px #000c, inset 0 0 0 2px #f9efdb;
+  text-align: center;
+  animation: workbench-card-in .3s cubic-bezier(.22,.9,.3,1) both;
+}
+
+@keyframes workbench-card-in {
+  from { opacity: 0; transform: translateY(12px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+.workbench-done__seal { font-size: 1.9rem; }
+
+.workbench-done__card h3 {
+  margin: 6px 0 12px;
+  color: #493422;
+  font-family: Georgia, 'Songti SC', 'SimSun', serif;
+  font-size: 1.28rem;
+}
+
+.workbench-done__card p {
+  margin: 0 0 9px;
+  color: #4a3a28;
+  font-size: .88rem;
+  line-height: 1.85;
+}
+
+.workbench-done__lead { color: #274b42 !important; font-weight: 700; }
+.workbench-done__end { font-weight: 700; color: #7a5a2e !important; }
+
+.workbench-done__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 10px 22px;
+  border: 1px solid #8e7240;
+  border-radius: 3px;
+  background-image: linear-gradient(180deg, #f6e0b0, #dcb97e 46%, #c19c5e);
+  color: #17283d;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 #fffdf799, 0 10px 22px -14px #000c, 0 0 20px -4px #e6c489;
+}
+
+@media (max-width: 700px) {
+  .workbench-done__card { padding: 16px 15px 14px; }
+  .workbench-done__card h3 { font-size: 1.1rem; }
+  .workbench-done__card p { font-size: .84rem; }
+  .workbench-done__btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coke-material-tray .coke-material-tray__next,
+  .workbench-done,
+  .workbench-done__card { animation: none; }
+}
+
+/* 旧版第二幕存档的提示（老玩家的调查记录不再计入五项任务） */
+.coke-material-tray .coke-material-tray__legacy {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 5px 9px;
+  border-left: 3px solid #b18a55;
+  background: #c9a56b1f;
+  color: #e6d3b3;
+  font-size: .74rem;
+  line-height: 1.55;
+}
+
+/* 传播记录：三份情报各自的原始报道与三层传播 */
+.coke-material .coke-spread { margin-top:14px; padding-top:13px; border-top:1px solid #c8a87566; }
+.coke-material .coke-spread:first-of-type { margin-top:6px; padding-top:0; border-top:0; }
+.coke-material .coke-spread h4 { margin:0 0 9px; color:#5a442c; font-family:Georgia,'Songti SC',serif; font-size:1.02rem; letter-spacing:.05em; }
+.coke-material .coke-spread__row { display:grid; gap:3px; margin:0 0 10px; padding-left:11px; border-left:3px solid #b18a55; }
+.coke-material .coke-spread__row.is-original { padding:9px 12px; border-left-color:#7a5c33; background:#f7eed8; border-radius:0 3px 3px 0; }
+.coke-material .coke-spread__row p { margin:0; }
+.coke-material .coke-spread__tag { color:#8a6b41; font-size:.72rem; letter-spacing:.08em; }
+.coke-material .coke-spread__row small { color:#6d604d; font-size:.78rem; line-height:1.6; }
+.coke-material .coke-spread__row a { font-size:.82rem; }

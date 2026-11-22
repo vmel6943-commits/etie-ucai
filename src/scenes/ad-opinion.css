@@ -1,0 +1,350 @@
+/* 情报工作台 · 个人观点（连续两页投票）
+   独立文件：不改动 coke-materials.css / coke-report.css 的任何既有规则。 */
+
+.ad-opinion { color: #3c3329; }
+
+.ad-opinion__page {
+  animation: ad-opinion-page-in .34s cubic-bezier(.22,.9,.3,1) both;
+}
+
+@keyframes ad-opinion-page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 顶部：页码 + 进度 ● ─ ○ */
+.ad-opinion__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #c8a87566;
+}
+
+.ad-opinion .eyebrow {
+  color: #8a6b41;
+  font-size: .72rem;
+  letter-spacing: .1em;
+}
+
+.ad-opinion__progress {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ad-opinion__dot {
+  width: 9px;
+  height: 9px;
+  border: 1px solid #a98a58;
+  border-radius: 50%;
+  background: transparent;
+  transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+
+.ad-opinion__dot.is-on {
+  border-color: #8e7240;
+  background: #b08b4f;
+  box-shadow: 0 0 0 2px #c8a8754d;
+}
+
+.ad-opinion__rail {
+  width: 26px;
+  height: 1px;
+  background: #c2a476;
+  transition: background .25s ease;
+}
+
+.ad-opinion__rail.is-on { background: #b08b4f; }
+
+/* 标题与背景 */
+.ad-opinion__topic {
+  margin: 11px 0 12px;
+  color: #493422;
+  font-family: Georgia, 'Songti SC', 'SimSun', serif;
+  font-size: 1.3rem;
+  line-height: 1.42;
+}
+
+.ad-opinion__background {
+  margin: 0 0 13px;
+  padding: 11px 14px;
+  border-left: 3px solid #b08b4f;
+  background: #f7eed8;
+}
+
+.ad-opinion__background p {
+  margin: 0 0 8px;
+  color: #4a3a28;
+  font-size: .88rem;
+  line-height: 1.85;
+}
+
+.ad-opinion__background p:last-child { margin-bottom: 0; }
+
+/* 小配图：限高，避免挤掉选项 */
+.ad-opinion__figure {
+  margin: 0 0 14px;
+  overflow: hidden;
+  border: 1px solid #b99a68;
+  border-radius: 4px;
+  background: #efe4cd;
+  line-height: 0;
+}
+
+.ad-opinion__figure img {
+  display: block;
+  width: 100%;
+  max-height: 148px;
+  object-fit: cover;
+}
+
+/* 数据卡（第 2 页没有配图时使用） */
+.ad-opinion__stat {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid #b99a68;
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(0deg, #00000008 0 1px, transparent 1px 5px),
+    #fbf3e1;
+}
+
+.ad-opinion__stat strong {
+  display: block;
+  color: #1d3a44;
+  font-family: Georgia, 'Songti SC', serif;
+  font-size: 1.75rem;
+  line-height: 1.15;
+}
+
+.ad-opinion__stat span {
+  display: block;
+  margin-top: 2px;
+  color: #6d5a3f;
+  font-size: .8rem;
+  letter-spacing: .04em;
+}
+
+.ad-opinion__stat ul {
+  margin: 9px 0 0;
+  padding-left: 17px;
+  display: grid;
+  gap: 4px;
+  border-top: 1px dashed #b79a6c;
+  padding-top: 8px;
+  color: #6a5942;
+  font-size: .76rem;
+  line-height: 1.6;
+}
+
+/* 问题 */
+.ad-opinion__question {
+  margin: 0 0 12px;
+  color: #3f3221;
+  font-size: .97rem;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* 选项 */
+.ad-opinion__options {
+  display: grid;
+  gap: 9px;
+  margin: 0 0 15px;
+}
+
+.ad-opinion__option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  text-align: left;
+  border: 1px solid #b99a68;
+  border-radius: 4px;
+  background: #f9f1de;
+  color: #3c3329;
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.ad-opinion__option:hover { border-color: #9b7847; background: #fdf6e7; }
+
+.ad-opinion__option:focus-visible { outline: 3px solid #a65d29; outline-offset: 2px; }
+
+.ad-opinion__option.is-selected {
+  padding: 11px 13px;
+  border: 2px solid #b08b4f;
+  background: #fdf4df;
+  box-shadow: inset 0 0 0 1px #c8a87580, 0 4px 12px -8px #6b5024;
+}
+
+.ad-opinion__badge {
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #b99a68;
+  border-radius: 50%;
+  background: #f3e7ce;
+  color: #755a37;
+  font: 700 .8rem/1 Georgia, serif;
+}
+
+.ad-opinion__option.is-selected .ad-opinion__badge {
+  border-color: #8e7240;
+  background: #b08b4f;
+  color: #fdf6e7;
+}
+
+.ad-opinion__copy { display: grid; gap: 3px; min-width: 0; }
+.ad-opinion__name { font-size: .95rem; line-height: 1.5; }
+.ad-opinion__detail { color: #5c4c37; font-size: .86rem; line-height: 1.7; }
+
+/* 保存失败提示 */
+.ad-opinion__error {
+  margin: 0 0 12px;
+  padding: 9px 12px;
+  border: 1px solid #b06a4a;
+  border-left: 4px solid #a4543a;
+  border-radius: 3px;
+  background: #fbeee4;
+  color: #7c3b28;
+  font-size: .82rem;
+  line-height: 1.65;
+}
+
+/* 提交 */
+.ad-opinion__submit {
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid #9b7847;
+  border-radius: 3px;
+  background: #183146;
+  color: #f9eddb;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 2px #c1a06a66;
+  transition: background .16s ease, opacity .16s ease;
+}
+
+.ad-opinion__submit:hover:not(:disabled) { background: #284a5e; }
+
+.ad-opinion__submit:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+
+.ad-opinion__submit:focus-visible { outline: 3px solid #a65d29; outline-offset: 2px; }
+
+.ad-opinion__note {
+  margin: 12px 0 0;
+  color: #7a6a52;
+  font-size: .77rem;
+  line-height: 1.65;
+}
+
+/* ───────────── 完成页 ───────────── */
+.ad-opinion__done-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #c8a87566;
+}
+
+.ad-opinion__seal { font-size: 1.6rem; line-height: 1; }
+
+.ad-opinion--done h3 {
+  flex: 1;
+  margin: 0;
+  color: #493422;
+  font-family: Georgia, 'Songti SC', 'SimSun', serif;
+  font-size: 1.22rem;
+  line-height: 1.4;
+}
+
+.ad-opinion__lead {
+  margin: 14px 0 6px;
+  color: #274b42;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.ad-opinion__text {
+  margin: 0 0 8px;
+  color: #4a3a28;
+  font-size: .89rem;
+  line-height: 1.85;
+}
+
+.ad-opinion__record {
+  margin: 14px 0;
+  padding: 12px 14px;
+  border: 1px solid #a88a59;
+  border-radius: 4px;
+  background: #f7eed8;
+}
+
+.ad-opinion__record h4 {
+  margin: 0 0 9px;
+  color: #4b3927;
+  font-size: .9rem;
+  letter-spacing: .04em;
+}
+
+.ad-opinion__record dl { margin: 0; display: grid; gap: 8px; }
+
+.ad-opinion__record dl > div {
+  display: grid;
+  gap: 2px;
+  padding-left: 10px;
+  border-left: 3px solid #b08b4f;
+}
+
+.ad-opinion__record dt { color: #6d604d; font-size: .78rem; }
+
+.ad-opinion__record dd {
+  margin: 0;
+  color: #2f2317;
+  font-size: .92rem;
+  font-weight: 700;
+}
+
+.ad-opinion__closing {
+  margin: 14px 0 6px;
+  padding: 10px 13px;
+  border: 1px dashed #b79a6c;
+  border-radius: 3px;
+  background: #fbf3e1;
+  color: #4a3a28;
+  font-size: .88rem;
+  line-height: 1.75;
+}
+
+.ad-opinion--done .ad-opinion__submit { margin-top: 4px; }
+
+@media (max-width: 700px) {
+  .ad-opinion__topic { font-size: 1.12rem; }
+  .ad-opinion__background { padding: 10px 12px; }
+  .ad-opinion__background p { font-size: .84rem; }
+  .ad-opinion__figure img { max-height: 104px; }
+  .ad-opinion__stat strong { font-size: 1.5rem; }
+  .ad-opinion__option { gap: 10px; padding: 10px 12px; }
+  .ad-opinion__option.is-selected { padding: 9px 11px; }
+  .ad-opinion__detail { font-size: .83rem; }
+  .ad-opinion__submit { width: 100%; }
+  .ad-opinion--done h3 { font-size: 1.06rem; }
+  .ad-opinion__seal { font-size: 1.35rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-opinion__page { animation: none; }
+  .ad-opinion__option,
+  .ad-opinion__submit,
+  .ad-opinion__dot,
+  .ad-opinion__rail { transition: none; }
+}

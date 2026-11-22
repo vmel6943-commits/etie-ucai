@@ -1,0 +1,369 @@
+/* 情报工作台 · 列车广告放映室
+   独立文件：不改动 coke-materials.css 的既有规则。 */
+
+.screening { color: #3c3329; }
+
+/* ── 抬头 ── */
+.screening__head {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #c8a87566;
+}
+
+.screening__kicker {
+  display: block;
+  color: #8a6b41;
+  font-size: .72rem;
+  letter-spacing: .12em;
+}
+
+.screening__head h3 {
+  margin: 6px 0 0;
+  color: #493422;
+  font-family: Georgia, 'Songti SC', 'SimSun', serif;
+  font-size: 1.12rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ── 播放器 ── */
+.screening__player { margin: 14px 0 16px; }
+
+.screening__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 3px solid #8e7240;
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at 50% 40%, #22303d, #0d151d 70%);
+  box-shadow:
+    inset 0 0 0 2px #00000059,
+    0 10px 26px -16px #000000cc;
+  overflow: hidden;
+  animation: screening-swap .28s ease both;
+}
+
+@keyframes screening-swap {
+  from { opacity: .35; }
+  to { opacity: 1; }
+}
+
+.screening__frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* 官方视频不可用时的说明（不挂 iframe，避免平台错误页） */
+.screening__offline {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 22px;
+  text-align: center;
+  color: #e8d5b4;
+}
+
+.screening__offline strong {
+  font-size: .95rem;
+  letter-spacing: .03em;
+}
+
+.screening__offline p {
+  margin: 0;
+  max-width: 34em;
+  color: #b7a68a;
+  font-size: .78rem;
+  line-height: 1.7;
+}
+
+.screening__offline code {
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: #ffffff14;
+  color: #f0d9b0;
+  font-size: .74rem;
+  word-break: break-all;
+}
+
+.screening__offline-url code {
+  display: inline-block;
+  max-width: 100%;
+  font-size: .72rem;
+  line-height: 1.6;
+}
+
+.screening__offline a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  min-height: 34px;
+  padding: 6px 14px;
+  border: 1px solid #c8a875;
+  border-radius: 3px;
+  background: #1b2c3d;
+  color: #f4d49b;
+  font-size: .76rem;
+  text-decoration: none;
+}
+
+.screening__offline a:hover { background: #24394e; }
+
+.screening__meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 11px;
+}
+
+.screening__year {
+  display: inline-block;
+  padding: 1px 8px;
+  border: 1px solid #b99a68;
+  border-radius: 99px;
+  color: #755a37;
+  font: 700 .7rem/1.6 Georgia, serif;
+  letter-spacing: .06em;
+}
+
+.screening__meta h4 {
+  margin: 6px 0 3px;
+  color: #3f3221;
+  font-size: 1.02rem;
+  line-height: 1.4;
+}
+
+.screening__film {
+  margin: 0;
+  color: #8a6b41;
+  font-size: .76rem;
+  letter-spacing: .03em;
+}
+
+.screening__watch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 7px 13px;
+  border: 1px solid #9b7847;
+  border-radius: 3px;
+  background: #183146;
+  color: #f9eddb;
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: inset 0 0 0 2px #c1a06a66;
+}
+
+.screening__watch:hover { background: #284a5e; }
+
+.screening__watch:focus-visible { outline: 3px solid #a65d29; outline-offset: 2px; }
+
+.screening__desc {
+  margin: 10px 0 0;
+  color: #4a3a28;
+  font-size: .87rem;
+  line-height: 1.85;
+}
+
+.screening__hint {
+  margin: 8px 0 0;
+  color: #7a6a52;
+  font-size: .74rem;
+  line-height: 1.6;
+}
+
+/* ── 视频卡片 ── */
+.screening__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.screening__card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 2px;
+  padding: 7px 7px 9px;
+  text-align: left;
+  border: 1px solid #b99a68;
+  border-radius: 5px;
+  background: #f9f1de;
+  color: #3c3329;
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+
+.screening__card:hover { border-color: #9b7847; background: #fdf6e7; }
+
+.screening__card:focus-visible { outline: 3px solid #a65d29; outline-offset: 2px; }
+
+.screening__card.is-active {
+  border-color: #8e7240;
+  background: #fdf4df;
+  box-shadow: inset 0 0 0 1px #c8a87580, 0 6px 14px -10px #6b5024;
+}
+
+.screening__cover {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 5px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: linear-gradient(160deg, #3b4a58, #1b2733);
+}
+
+.screening__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 封面加载失败时的占位：胶片格纹，不假装是视频画面 */
+.screening__cover i {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, #ffffff12 0 6px, transparent 6px 14px),
+    linear-gradient(160deg, #3b4a58, #1b2733);
+}
+
+.screening__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding-left: 2px;
+  border-radius: 50%;
+  border: 1px solid #f3d7a5;
+  background: #13283bd9;
+  color: #f4d49b;
+  z-index: 1;
+}
+
+.screening__card.is-active .screening__play {
+  background: #b08b4f;
+  border-color: #fff2d8;
+  color: #fff8ea;
+}
+
+.screening__card-no {
+  color: #8a6b41;
+  font: 700 .66rem/1.4 Georgia, serif;
+  letter-spacing: .1em;
+}
+
+.screening__card-name {
+  color: #3f3221;
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.screening__card-year {
+  color: #8a6b41;
+  font: 700 .68rem/1.4 Georgia, serif;
+  letter-spacing: .08em;
+}
+
+/* 站内不可播的卡片：整体压暗，避免误以为能点开播放 */
+.screening__card.is-off .screening__cover img,
+.screening__card.is-off .screening__cover i { filter: grayscale(.7) brightness(.75); }
+
+.screening__card.is-off .screening__card-year { color: #a4553a; }
+
+.screening__back {
+  min-height: 42px;
+  margin-top: 16px;
+  padding: 9px 20px;
+  border: 1px solid #9b7847;
+  border-radius: 3px;
+  background: #183146;
+  color: #f9eddb;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 2px #c1a06a66;
+}
+
+.screening__back:hover { background: #284a5e; }
+
+/* ── 手机端 ── */
+@media (max-width: 700px) {
+  .screening__head h3 { font-size: 1rem; }
+  .screening__frame { border-width: 2px; border-radius: 6px; }
+  .screening__meta { gap: 8px; }
+  .screening__meta h4 { font-size: .96rem; }
+  .screening__watch { width: 100%; justify-content: center; min-height: 40px; }
+  .screening__desc { font-size: .85rem; }
+  .screening__cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .screening__card-name { font-size: .74rem; }
+  .screening__back { width: 100%; min-height: 46px; margin-bottom: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screening__frame { animation: none; }
+  .screening__card { transition: none; }
+}
+
+/* 看完确认：点开不等于完成 */
+.screening__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 16px;
+}
+
+.screening__done {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 42px;
+  padding: 9px 22px;
+  border: 1px solid #8e7240;
+  border-radius: 3px;
+  background-image: linear-gradient(180deg, #f6e0b0, #dcb97e 46%, #c19c5e);
+  color: #17283d;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 #fffdf7aa, inset 0 -2px 0 #8e724055;
+}
+
+.screening__done:hover { filter: brightness(1.05); }
+.screening__done:disabled { opacity: 1; cursor: default; filter: none; background-image: linear-gradient(180deg, #e7dcc4, #d3c4a4); color: #6c5a3e; }
+
+.screening__hint {
+  flex: 1 1 240px;
+  margin: 0;
+  color: #6d604d;
+  font-size: .78rem;
+  line-height: 1.6;
+}
+
+.screening__footer .screening__back { margin-top: 0; }
+
+@media (max-width: 700px) {
+  .screening__footer { flex-direction: column-reverse; align-items: stretch; gap: 8px; }
+  .screening__done { width: 100%; min-height: 46px; }
+  .screening__footer .screening__back { width: 100%; margin-bottom: 0; }
+  .screening__hint { flex: none; font-size: .74rem; }
+}

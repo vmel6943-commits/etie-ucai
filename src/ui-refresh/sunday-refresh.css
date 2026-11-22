@@ -1,0 +1,807 @@
+/* =============================================================================
+   鹅铁U彩 · 视觉精修层 (v2)
+   -----------------------------------------------------------------------------
+   纯增量样式层：不修改任何既有 CSS 文件，只在本文件之后追加覆盖。
+   · 不触碰 .scene-art / .art-board / 热点坐标 —— 3D 与 2.5D 层由另一位同学维护。
+   · 不改存档结构、不改剧情推进条件、不改任何数据文件。
+   · 全部规则以 .game 前缀限定作用域，避免影响分享图以外的外部页面。
+   装载方式：在 main.tsx 中「最后一行」import。
+   ========================================================================== */
+
+:root {
+  /* 排版：宋体系承载标题与票面，无衬线只用于小号界面文字 */
+  --font-display: 'STZhongsong', '华文中宋', 'Songti SC', 'Noto Serif CJK SC', 'STSong', 'SimSun', serif;
+  --font-print: 'STSong', '华文宋体', 'Songti SC', 'Noto Serif CJK SC', 'SimSun', serif;
+  --font-ui: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+
+  /* 金属金：票面与印章统一取同一支金色渐变 */
+  --gold-sheen: linear-gradient(176deg, #fff6de 0%, #f2d8a6 30%, #d3ab6c 58%, #f7e3b8 82%, #e0bd84 100%);
+  --gold-flat: #dfc187;
+  --gold-deep: #8b6a3e;
+  --rail-navy: #101d2b;
+}
+
+/* =============================================================================
+   1 · 车票：剪影 / 纸纹 / 金色双框
+   ========================================================================== */
+
+.game .ui-ticket {
+  --notch: 15px;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background-color: var(--ticket-paper);
+  /* 四角纹章 + 纸纤维颗粒 + 中心受光 + 纸底渐变（自下而上叠放） */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='.5'/%3E%3C/svg%3E"),
+    radial-gradient(130% 95% at 28% -8%, var(--ticket-light), transparent 62%),
+    linear-gradient(152deg, var(--ticket-paper) 0%, var(--ticket-edge) 100%);
+  background-size: 140px 140px, 100% 100%, 100% 100%;
+  background-position: 0 0, 0 0, 0 0;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-blend-mode: overlay, normal, normal;
+
+  /* 四角凹口（参考图的票根剪角） */
+  -webkit-mask-image:
+    radial-gradient(circle at 0 0, #0000 var(--notch), #000 calc(var(--notch) + .5px)),
+    radial-gradient(circle at 100% 0, #0000 var(--notch), #000 calc(var(--notch) + .5px)),
+    radial-gradient(circle at 0 100%, #0000 var(--notch), #000 calc(var(--notch) + .5px)),
+    radial-gradient(circle at 100% 100%, #0000 var(--notch), #000 calc(var(--notch) + .5px));
+  mask-image:
+    radial-gradient(circle at 0 0, #0000 var(--notch), #000 calc(var(--notch) + .5px)),
+    radial-gradient(circle at 100% 0, #0000 var(--notch), #000 calc(var(--notch) + .5px)),
+    radial-gradient(circle at 0 100%, #0000 var(--notch), #000 calc(var(--notch) + .5px)),
+    radial-gradient(circle at 100% 100%, #0000 var(--notch), #000 calc(var(--notch) + .5px));
+  -webkit-mask-size: 51% 51%;
+  mask-size: 51% 51%;
+  -webkit-mask-position: 0 0, 100% 0, 0 100%, 100% 100%;
+  mask-position: 0 0, 100% 0, 0 100%, 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  box-shadow:
+    inset 0 0 0 1.5px var(--ticket-gold),
+    inset 0 0 42px -14px #000000cc;
+}
+
+/* 内细框：参考图中金色外框之内还有一道细线 */
+.game .ui-ticket::before {
+  inset: 12px;
+  border: 1px solid var(--ticket-line);
+  border-radius: 2px;
+}
+
+/* =============================================================================
+   2 · 车票：表头 / 标题 / 装饰
+   ========================================================================== */
+
+.game .ui-ticket__masthead {
+  font-family: var(--font-print);
+  letter-spacing: .3em;
+  font-size: .64rem;
+}
+
+/* 标题：金属金色渐变描字；羊皮纸票面改用墨色，避免浅底金字发灰 */
+.game .ui-ticket__heading h3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.15rem, 4.5vw, 3.15rem);
+  letter-spacing: .09em;
+  background-image: var(--gold-sheen);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 1.5px 0 #06101a66);
+}
+
+.game .ui-ticket--1 .ui-ticket__heading h3 {
+  background-image: linear-gradient(176deg, #2b4453 0%, #16252f 55%, #3c5a6a 100%);
+}
+
+/* 标题下的飘带：加厚、加内线，像真正的缎带 */
+.game .ui-ticket__ribbon {
+  position: relative;
+  padding: 4px 20px;
+  border: 0;
+  box-shadow: 0 1px 0 #0000002e, inset 0 0 0 1px #ffffff2e, inset 0 1px 0 #ffffff40;
+  font-family: var(--font-print);
+  letter-spacing: .08em;
+}
+
+/* 怀表：放大并补上表链，压住左上角 */
+.game .ui-ticket__watch {
+  left: 1px;
+  top: 4px;
+  width: 46px;
+  height: 86px;
+  opacity: .92;
+}
+
+/* 邮戳：把 ≋ 换成真正的波纹销票线 */
+.game .ui-ticket__postmark {
+  border-width: 1.5px;
+  letter-spacing: .02em;
+  transform: rotate(-8deg);
+}
+
+.game .ui-ticket__postmark i {
+  display: block;
+  left: 96%;
+  width: 46px;
+  height: 22px;
+  font-size: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='22' viewBox='0 0 46 22'%3E%3Cg fill='none' stroke='%23dfc187' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M0 3q5.5-3 11 0t11 0 11 0 11 0'/%3E%3Cpath d='M0 11q5.5-3 11 0t11 0 11 0 11 0'/%3E%3Cpath d='M0 19q5.5-3 11 0t11 0 11 0 11 0'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: .8;
+}
+
+/* =============================================================================
+   3 · 车票：出发地 / 目的地空白铭牌 / 火车插画
+   ========================================================================== */
+
+.game .ui-ticket__origin small {
+  font-family: var(--font-print);
+  letter-spacing: .14em;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px #ffffff1c;
+}
+
+.game .ui-ticket__origin strong {
+  font-family: var(--font-display);
+  letter-spacing: .12em;
+  border-bottom: 1px solid var(--ticket-line);
+  padding-bottom: 3px;
+}
+
+/* 终点铭牌：从「空输入框」改成刻着「尚待揭晓」的黄铜空牌 */
+.game .ui-ticket__destination-plate {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  border: 1px solid var(--ticket-gold);
+  background: linear-gradient(180deg, #dfc18722, #dfc1870d);
+  box-shadow:
+    inset 0 0 0 2px var(--ticket-paper),
+    inset 0 0 0 3px var(--ticket-line),
+    inset 0 0 9px #0000002e;
+}
+
+.game .ui-ticket__destination-plate::after {
+  content: '尚待揭晓';
+  color: var(--ticket-muted);
+  font: 400 8px/1 var(--font-print);
+  letter-spacing: .34em;
+  text-indent: .34em;
+  opacity: .85;
+}
+
+/* 火车插画：底部加一道地平线，让蒸汽与纸面咬合 */
+.game .ui-ticket__landscape::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ticket-gold), transparent);
+  opacity: .55;
+}
+
+/* =============================================================================
+   4 · 车票：信息行 / 状态章 / 票根
+   ========================================================================== */
+
+/* 票面底部的雕版云带：只加在深色票面上，浅色羊皮纸票面留白更干净 */
+.game .ui-ticket:not(.ui-ticket--1) .ui-ticket__body::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='34' viewBox='0 0 260 34'%3E%3Cg fill='none' stroke='%23dfc187' stroke-width='1'%3E%3Cpath d='M-10 30c14 0 18-13 34-13s20 13 34 13 18-14 34-14 20 14 34 14 18-13 34-13 20 13 34 13 18-14 34-14 20 14 34 14'/%3E%3Cpath d='M-10 34c14 0 18-9 34-9s20 9 34 9 18-10 34-10 20 10 34 10 18-9 34-9 20 9 34 9 18-10 34-10 20 10 34 10' opacity='.55'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 260px 34px;
+  opacity: .16;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.game .ui-ticket__details,
+.game .ui-ticket__bottom,
+.game .ui-ticket__landscape {
+  position: relative;
+  z-index: 1;
+}
+
+.game .ui-ticket__details small {
+  font-family: var(--font-print);
+  letter-spacing: .12em;
+}
+
+.game .ui-ticket__details strong {
+  font-family: var(--font-print);
+  letter-spacing: .06em;
+}
+
+/* 状态章：做成真正的橡皮图章，双圈 + 内虚线 + 略歪 */
+.game .ui-ticket__status {
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border: 2px solid var(--ticket-gold);
+  border-radius: 50%;
+  font-family: var(--font-print);
+  letter-spacing: .1em;
+  box-shadow:
+    inset 0 0 0 2px var(--ticket-paper),
+    inset 0 0 0 2.6px var(--ticket-gold);
+  text-shadow: 0 0 1px currentColor;
+}
+
+/* 状态章旋转后会顶出内容盒，右侧留出余量，避免被票面裁掉 */
+.game .ui-ticket__bottom {
+  padding-right: 4px;
+}
+
+.game .ui-ticket__status.is-checked {
+  animation: seal-strike .42s cubic-bezier(.2, .9, .25, 1) both;
+}
+
+/* 票根：去掉虚线，改成真正的齿孔（连续圆孔） */
+.game .ui-ticket__stub {
+  border-left: 0;
+  padding-left: 12px;
+  background-image:
+    linear-gradient(168deg, #ffffff14, transparent 55%),
+    linear-gradient(145deg, var(--stub-paper), var(--stub-edge));
+}
+
+.game .ui-ticket__stub::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 0;
+  border: 0;
+  background: var(--ticket-edge);
+  background-image: radial-gradient(circle at 50% 50%, var(--ticket-edge) 1.15px, #0000 1.25px);
+  background-size: 3px 8px;
+  background-color: var(--stub-paper);
+  box-shadow: 0 0 0 .5px var(--ticket-gold);
+}
+
+.game .ui-ticket__stub::after {
+  display: none;
+}
+
+/* 票根外侧锯齿边：像邮票撕口 */
+.game .ui-ticket__stub {
+  -webkit-mask-image: radial-gradient(circle at 100% 50%, #0000 4px, #000 4.4px);
+  mask-image: radial-gradient(circle at 100% 50%, #0000 4px, #000 4.4px);
+  -webkit-mask-size: 100% 13px;
+  mask-size: 100% 13px;
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+}
+
+.game .ui-ticket__stub strong {
+  font-family: var(--font-display);
+  letter-spacing: .04em;
+}
+
+.game .ui-ticket__stub-limited {
+  font-family: var(--font-print);
+  letter-spacing: .1em;
+}
+
+@keyframes seal-strike {
+  0% { opacity: 0; transform: rotate(-12deg) scale(1.7); }
+  60% { opacity: 1; transform: rotate(-12deg) scale(.92); }
+  100% { opacity: 1; transform: rotate(-12deg) scale(1); }
+}
+
+/* =============================================================================
+   5 · 手机端：390px 下的票面重排
+   ========================================================================== */
+
+@media (max-width: 700px) {
+  .game .ui-ticket {
+    --notch: 10px;
+    box-shadow:
+      inset 0 0 0 1px var(--ticket-gold),
+      inset 0 0 26px -12px #000000cc;
+  }
+
+  .game .ui-ticket::before {
+    inset: 5px;
+  }
+
+  .game .ui-ticket__heading h3 {
+    letter-spacing: .06em;
+  }
+
+  .game .ui-ticket__watch {
+    left: 0;
+    top: 3px;
+    width: 27px;
+    height: 51px;
+    opacity: .78;
+  }
+
+  .game .ui-ticket__origin strong {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .game .ui-ticket__destination-plate {
+    height: 15px;
+  }
+
+  .game .ui-ticket__destination-plate::after {
+    font-size: 6px;
+    letter-spacing: .2em;
+    text-indent: .2em;
+  }
+
+  .game .ui-ticket__stub {
+    padding-left: 9px;
+    -webkit-mask-image: radial-gradient(circle at 100% 50%, #0000 3px, #000 3.4px);
+    mask-image: radial-gradient(circle at 100% 50%, #0000 3px, #000 3.4px);
+    -webkit-mask-size: 100% 10px;
+    mask-size: 100% 10px;
+  }
+
+  .game .ui-ticket__postmark i {
+    width: 26px;
+    height: 14px;
+  }
+}
+
+/* =============================================================================
+   6 · 无障碍：尊重减少动态效果偏好
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .game .ui-ticket__status.is-checked { animation: none; }
+}
+
+.game.reduced-motion .ui-ticket__status.is-checked { animation: none; }
+
+/* =============================================================================
+   7 · 全局排版：把宋体系提到字族首位
+   -----------------------------------------------------------------------------
+   原 --scene-serif 以 Georgia 打头，Windows 上 Georgia 没有汉字，最终落到
+   细笔画的 SimSun，标题因此发「模板感」。这里改为 华文中宋 优先：
+   Windows 得到厚重的雕版宋，iOS 仍走 Songti SC，Android 走思源宋体。
+   注意：既有 UI 层用 .game 前缀提升权重，本节所有选择器同样加 .game，
+   保证不依赖打包顺序也能稳定覆盖。
+   ========================================================================== */
+
+:root:root {
+  --scene-serif: 'STZhongsong', '华文中宋', 'Songti SC', 'Noto Serif CJK SC', 'STSong', 'SimSun', Georgia, serif;
+}
+
+.game .opening h1,
+.game .panel-head h2,
+.game .journey-heading,
+.recovery-page h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+/* 封面主标题：加厚、收紧行距，压住整块画面 */
+.game .opening h1 {
+  font-size: clamp(2.95rem, 5.1vw, 5.5rem);
+  line-height: 1.22;
+  letter-spacing: .09em;
+  color: #f6e8cb;
+  text-shadow: 0 2px 22px #040a11b8, 0 1px 0 #ffffff10;
+  margin: 18px 0 22px;
+}
+
+.game .opening-credit {
+  font-family: var(--font-print);
+  letter-spacing: .3em;
+  font-size: .8rem;
+  color: #f0d8b0;
+}
+
+/* 周一 —— 周日：把直线换成钢轨虚线，中间加一枚菱形节点 */
+.game .opening-route {
+  font-family: var(--font-print);
+  letter-spacing: .16em;
+  color: #eed3a4;
+}
+
+.game .opening-route i {
+  position: relative;
+  display: block;
+  flex: 1;
+  height: 1px;
+  background-image: repeating-linear-gradient(90deg, #c8a875aa 0 4px, #0000 4px 8px);
+}
+
+.game .opening-route i::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: #d9b87e;
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px #e2c18766;
+}
+
+/* =============================================================================
+   8 · 顶栏：黄铜仪表盘
+   ========================================================================== */
+
+.game .topbar {
+  background-image: linear-gradient(180deg, #1a2c43 0%, #132234 62%, #101d2b 100%);
+  border-bottom: 1px solid #c8a87533;
+  box-shadow: inset 0 1px 0 #ffffff08, 0 12px 30px -22px #000;
+}
+
+/* 底边再压一道极细的黄铜线，像仪表盘的双层接缝 */
+.game .topbar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3px;
+  height: 1px;
+  background: linear-gradient(90deg, #0000, #c8a87540 18%, #c8a87540 82%, #0000);
+  pointer-events: none;
+}
+
+.game .brand-emblem {
+  border: 1px solid #c8a8755c;
+  box-shadow:
+    inset 0 0 0 3px #c8a8750f,
+    0 0 14px -6px #e2c18799;
+}
+
+.game .brand-name {
+  font-family: var(--font-display);
+  letter-spacing: .12em;
+}
+
+.game .brand-name small {
+  font-family: var(--font-print);
+  letter-spacing: .24em;
+  color: #c8a875ad;
+}
+
+.game .chapter-marker {
+  font-family: var(--font-print);
+  letter-spacing: .14em;
+  color: #b9c2c8;
+}
+
+.game .chapter-marker span {
+  color: #e6cda2;
+}
+
+/* =============================================================================
+   9 · 按钮与控件：黄铜片，按下有实感
+   ========================================================================== */
+
+.game .button {
+  border-radius: 2px;
+  border: 1px solid #8e7240;
+  background-image: linear-gradient(180deg, #f0d9ab 0%, #d7b57c 46%, #bf9a5d 100%);
+  color: #17283d;
+  box-shadow:
+    inset 0 1px 0 #fffdf766,
+    inset 0 -2px 0 #8e724055,
+    0 8px 18px -10px #000c;
+  transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.game .button:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.game .button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 #fffdf733,
+    inset 0 -1px 0 #8e724044,
+    0 3px 8px -6px #000c;
+}
+
+.game .button.secondary {
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 #ffffff12, 0 6px 14px -10px #000a;
+}
+
+/* 领取车票：做成一张登车牌，内圈虚线像票根压线 */
+.game .cover-ticket {
+  position: relative;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 1px 0 #fffdf766,
+    inset 0 -2px 0 #8e724055,
+    0 12px 26px -14px #000d;
+}
+
+.game .cover-ticket::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed #5c4a2b4d;
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+/* 检票口：黄铜凹槽 */
+.game .machine-slot {
+  border-radius: 2px;
+  border-color: #8e7240;
+  background-image: linear-gradient(180deg, #0d1826, #16273a);
+  box-shadow: inset 0 5px 16px #000000a6, 0 0 0 1px #c8a87526;
+}
+
+.game .ticket-slot {
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.game .ticket-slot:hover {
+  border-color: #c8a875;
+  box-shadow: inset 0 5px 16px #000000a6, 0 0 0 1px #c8a8755c, 0 0 22px -12px #e2c187;
+}
+
+/* 检票结果：一张盖好章的纸签 */
+.game .ui-check-result {
+  border: 1px solid #c8a87566;
+  background-image: linear-gradient(180deg, #f3e4c6, #e5d2ac);
+  color: #22384a;
+  box-shadow: 0 10px 24px -14px #000a;
+}
+
+.game .ui-check-result strong {
+  font-family: var(--font-display);
+  letter-spacing: .08em;
+}
+
+.game .ui-check-selection.selected {
+  border-color: #8e7240;
+  box-shadow: inset 0 1px 0 #fffdf755, 0 6px 14px -10px #000a;
+}
+
+/* =============================================================================
+   10 · 面板与提示条：纸面质感
+   ========================================================================== */
+
+.game .panel {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23p)' opacity='.42'/%3E%3C/svg%3E"),
+    linear-gradient(168deg, #f4e9d4 0%, #e7d8bb 100%);
+  background-blend-mode: multiply, normal;
+  box-shadow: 0 26px 90px -30px #000b, inset 0 2px 0 #ffffff40;
+}
+
+.game .panel::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px solid #c6a56f4d;
+  pointer-events: none;
+}
+
+.game .panel-head h2 {
+  font-family: var(--font-display);
+  letter-spacing: .1em;
+}
+
+.game .toast {
+  border-radius: 2px;
+  border: 1px solid #c8a8758c;
+  background-image: linear-gradient(180deg, #16283ceb, #101d2be8);
+  box-shadow: 0 16px 40px -18px #000, inset 0 1px 0 #ffffff12;
+}
+
+/* =============================================================================
+   11 · 触屏与键盘：微信内浏览器的实际手感
+   ========================================================================== */
+
+.game,
+.game button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game button {
+  touch-action: manipulation;
+}
+
+.game :where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid #f2d7a4;
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   12 · 手机端补充
+   ========================================================================== */
+
+@media (max-width: 700px) {
+  .game .opening h1 {
+    font-size: clamp(2.3rem, 9.2vw, 2.9rem);
+    letter-spacing: .06em;
+    line-height: 1.34;
+  }
+
+  .game .opening-credit {
+    letter-spacing: .22em;
+    font-size: .72rem;
+  }
+
+  .game .topbar {
+    padding-inline: 14px;
+  }
+
+  .game .panel::before {
+    inset: 5px;
+  }
+
+  /* 390px 下标题会撞到右上角的邮戳：单独收小字号与字距 */
+  .game .ui-ticket__heading {
+    padding: 0 38px 0 34px;
+  }
+
+  .game .ui-ticket__heading h3 {
+    font-size: clamp(1.5rem, 6.2vw, 1.92rem);
+    letter-spacing: .03em;
+    margin: 6px 0 5px;
+  }
+
+  .game .ui-ticket__masthead {
+    font-size: .5rem;
+    letter-spacing: .19em;
+  }
+
+  /* 信息行在手机上两列排布时，字距略收，避免票号被挤断 */
+  .game .ui-ticket__details strong {
+    letter-spacing: .02em;
+  }
+
+  .game .ui-ticket__status {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    font-size: .54rem;
+  }
+
+  /* 状态章旋转后会被票面右缘裁掉，手机端右侧再让出余量 */
+  .game .ui-ticket__bottom {
+    padding-right: 7px;
+    gap: 5px;
+  }
+
+  .game .ui-ticket__destination-plate::after {
+    font-size: 7px;
+    letter-spacing: .12em;
+    text-indent: .12em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game .button,
+  .game .ticket-slot {
+    transition: none;
+  }
+}
+
+/* =============================================================================
+   13 · 场景层零件：热点 / 返回 / 底部导航
+   -----------------------------------------------------------------------------
+   这三处是场景页最容易露出「网页模板感」的地方：热点是扁平圆点 + 深色气泡，
+   底部导航是一条平板。统一换成黄铜与印刷体语言，但不改任何坐标与层级。
+   ========================================================================== */
+
+/* 热点：刻出来的黄铜标点，带一圈缓缓呼吸的光晕 */
+.game .hotspot-ring {
+  border: 1px solid #d9b87e;
+  background:
+    radial-gradient(circle at 36% 30%, #f6e3bd 0%, #d2ae74 46%, #9a7a45 100%);
+  box-shadow:
+    0 0 0 3px #c8a8751f,
+    0 0 0 4px #06101a4d,
+    0 4px 10px -4px #000000b3,
+    inset 0 -2px 3px #0000004d,
+    inset 0 1px 1px #fffdf780;
+  animation: hotspot-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes hotspot-breathe {
+  0%, 100% { box-shadow: 0 0 0 3px #c8a8751f, 0 0 0 4px #06101a4d, 0 4px 10px -4px #000000b3, inset 0 -2px 3px #0000004d, inset 0 1px 1px #fffdf780; }
+  50% { box-shadow: 0 0 0 7px #c8a87512, 0 0 0 8px #06101a26, 0 4px 10px -4px #000000b3, inset 0 -2px 3px #0000004d, inset 0 1px 1px #fffdf780; }
+}
+
+/* 热点文字：像印在票签上，而不是弹出的小气泡 */
+.game .hotspot-label {
+  margin-top: 8px;
+  padding: 4px 12px;
+  border: 1px solid #c8a8757a;
+  border-radius: 1px;
+  background-image: linear-gradient(180deg, #16283ceb, #0f1b29e8);
+  color: #f0dfbe;
+  font-family: var(--font-print);
+  font-size: .73rem;
+  letter-spacing: .1em;
+  box-shadow: inset 0 0 0 1px #ffffff10, 0 6px 16px -8px #000c;
+  opacity: .93;
+}
+
+/* 返回：黄铜细边小牌 */
+.game .scene-back {
+  border-radius: 2px;
+  border: 1px solid #c8a87566;
+  background-image: linear-gradient(180deg, #1a2c43e8, #101d2be6);
+  color: #e9d5ac;
+  box-shadow: inset 0 1px 0 #ffffff10, 0 6px 16px -10px #000;
+  transition: border-color .18s ease, color .18s ease;
+}
+
+.game .scene-back:hover {
+  border-color: #c8a875aa;
+  color: #f6e6c6;
+}
+
+/* 底部导航：加深一条黄铜接缝，选中项改成菱形刻度 */
+.game .bottom-bar {
+  background-image: linear-gradient(180deg, #152539 0%, #101d2b 100%);
+  border-top: 1px solid #c8a87536;
+  box-shadow: inset 0 1px 0 #ffffff08, 0 -10px 28px -22px #000;
+}
+
+.game .bottom-bar nav > button {
+  font-family: var(--font-print);
+  letter-spacing: .08em;
+  transition: color .18s ease;
+}
+
+.game .bottom-bar nav > button.active {
+  color: #f2d9a8;
+}
+
+.game .bottom-bar nav > button.active:after {
+  background: #d9b87e;
+  box-shadow: 0 0 9px #e2c18788;
+  height: 1px;
+}
+
+/* 章节进度：换成印刷体的路线刻度 */
+.game .journey-progress {
+  font-family: var(--font-print);
+  letter-spacing: .08em;
+  color: #9fadb8;
+}
+
+@media (max-width: 700px) {
+  .game .hotspot-label {
+    padding: 3px 9px;
+    font-size: .66rem;
+    letter-spacing: .06em;
+  }
+
+  .game .hotspot-ring {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game .hotspot-ring {
+    animation: none;
+  }
+}

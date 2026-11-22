@@ -1,0 +1,15 @@
+import {useEffect,useRef,useId,type ReactNode} from 'react';
+import {X,Check} from 'lucide-react';
+import {useGame} from '../game/store';
+import {art,characters,type CharacterId} from '../data/config';
+export function Button({children,onClick,disabled=false,secondary=false,className='',type='button'}:{children:ReactNode;onClick?:()=>void;disabled?:boolean;secondary?:boolean;className?:string;type?:'button'|'submit'}){return <button type={type} className={`button ${secondary?'secondary':''} ${className}`} onClick={onClick} disabled={disabled}>{children}</button>;}
+export function Modal({title,eyebrow,children,onClose,wide=false}:{title:string;eyebrow?:string;children:ReactNode;onClose:()=>void;wide?:boolean}){
+ const ref=useRef<HTMLDivElement>(null);
+ const titleId=useId();
+ const closeRef=useRef(onClose);closeRef.current=onClose;
+ useEffect(()=>{const before=document.activeElement as HTMLElement;const focus=ref.current?.querySelector<HTMLElement>('button,input,select,textarea,[tabindex="0"]');focus?.focus();const key=(e:KeyboardEvent)=>{if(e.key==='Escape'){e.preventDefault();closeRef.current();}if(e.key==='Tab'){const list=Array.from(ref.current?.querySelectorAll<HTMLElement>('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),iframe,[tabindex="0"]')||[]).filter(item=>item.getClientRects().length>0);const first=list[0],last=list[list.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}};document.addEventListener('keydown',key);return()=>{document.removeEventListener('keydown',key);before?.focus();};},[]);
+ return <div className="modal-scrim" onPointerDown={e=>{if(e.target===e.currentTarget)onClose();}}><div ref={ref} className={`panel ${wide?'panel-wide':''}`} role="dialog" aria-modal="true" aria-labelledby={titleId}><header className="panel-head"><div>{eyebrow&&<span className="eyebrow">{eyebrow}</span>}<h2 id={titleId}>{title}</h2></div><button className="icon-button" aria-label="关闭，返回场景" onClick={onClose}><X/></button></header><div className="panel-body">{children}</div></div></div>;
+}
+export function Portrait({character,className=''}:{character:CharacterId;className?:string}){const c=characters[character];return <img className={`portrait ${className}`} src={art(c.image)} alt={c.name} draggable={false}/>;}
+export function Complete({children}:{children:ReactNode}){return <div className="complete"><Check size={19}/><span>{children}</span></div>;}
+export function Hint({hints,onSolve}:{hints:string[];onSolve?:()=>void}){const game=useGame(s=>s.game);const key='hint:'+hints[0];const level=Number(game.choices[key]||0);return <div className="hint"><button className="text-button" onClick={()=>useGame.getState().choose(key,String(Math.min(level+1,hints.length)))}>需要一点提示{level?` (${level}/${hints.length})`:''}</button>{level>0&&<p>{hints[Math.min(level,hints.length)-1]}</p>}{level>=hints.length&&onSolve&&<button className="text-button" onClick={onSolve}>辅助完成本次解谜</button>}</div>;}

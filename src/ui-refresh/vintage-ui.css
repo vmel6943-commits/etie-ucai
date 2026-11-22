@@ -1,0 +1,233 @@
+/* Independent UI layer. It deliberately leaves the scene artwork, hotspots and
+   their transforms alone so it can coexist with the separate 3D work. */
+.game {
+  --ui-brass: #b28b55;
+  --ui-ink: #203a3e;
+  --ui-paper: #efe3ce;
+}
+
+.game .topbar,
+.game .bottom-bar {
+  background: linear-gradient(110deg, #122633, #1c3038 60%, #13242e);
+  border-color: #d0ad6c4d;
+}
+.game .brand-emblem { box-shadow: inset 0 0 0 3px #d8bb8533, 0 0 0 1px #d8bb8524; }
+.game .panel {
+  background: linear-gradient(145deg, #f8eedc, #e9d9bc);
+  border-color: #b99b6a;
+  box-shadow: 0 22px 65px #07111bb3, inset 0 0 0 4px #f8eedc, inset 0 0 0 5px #aa8d5d66;
+  animation: ui-panel-in .2s ease-out both;
+}
+.game .panel-head {
+  border-bottom: 1px solid #aa8d5d66;
+  background: linear-gradient(90deg, #cfb68636, transparent);
+}
+.game .panel-head h2,
+.game .ticket-welcome h3 { font-family: Georgia, 'Songti SC', 'SimSun', serif; letter-spacing: .04em; }
+.game .panel-head .icon-button { min-width: 44px; min-height: 44px; }
+.game .panel-body { scrollbar-color: #a68a62 transparent; }
+
+.game .button,
+.game .machine-slot,
+.game .story-guide,
+.game .cover-ticket,
+.game .ticket-prefs > button,
+.game .ticket-styles > button {
+  transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.game .button:not(:disabled):active,
+.game .machine-slot:active,
+.game .story-guide:active,
+.game .cover-ticket:active { transform: translateY(1px) scale(.985); }
+.game .button:focus-visible,
+.game button:focus-visible,
+.game input:focus-visible,
+.game summary:focus-visible,
+.game select:focus-visible {
+  outline: 3px solid #b27237;
+  outline-offset: 3px;
+}
+.game .button { min-height: 46px; letter-spacing: .035em; }
+.game .button:not(.secondary):not(:disabled) { box-shadow: inset 0 0 0 1px #ffe7b355, 0 3px 8px #755c3620; }
+.game .button.secondary { border-color: #9a7f56aa; }
+.game .toast { border-color: #d0ad6c; line-height: 1.7; box-shadow: 0 12px 35px #09131ca6, inset 3px 0 #c39a5b; }
+
+/* Ticket builder: choices are large enough for touch and state is visible. */
+.game .ticket-welcome { border-bottom: 1px solid #b89b6c66; padding-bottom: 18px; }
+.game .ticket-welcome > svg { color: #937044; }
+.game .nickname-label input { min-height: 48px; font-size: 16px; }
+.game .ticket-prefs > button {
+  min-height: 48px;
+  padding: 11px 15px;
+  background: #fff8ed80;
+  border: 1px solid #bba27a;
+}
+.game .ticket-prefs > button.selected {
+  background: #d3bf9873;
+  border-color: #96713e;
+  box-shadow: inset 3px 0 #9c7844;
+}
+.game .ticket-custom summary { min-height: 44px; display: list-item; padding: 10px 0; }
+.game .ticket-styles > button { min-height: 48px; }
+.game .ticket-note { letter-spacing: .07em; }
+
+/* The ticket is a separate component and does not modify the save format. */
+.ui-ticket {
+  --ticket-paper: #203745;
+  --ticket-edge: #152b35;
+  --ticket-ink: #f7ead1;
+  --ticket-muted: #d0bea0;
+  --ticket-gold: #dbbf88;
+  --ticket-line: #d9bd8166;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 100px;
+  width: 100%;
+  max-width: 680px;
+  margin: 16px auto;
+  color: var(--ticket-ink);
+  background: var(--ticket-paper);
+  border: 1px solid var(--ticket-gold);
+  box-shadow: 0 9px 24px #4e3b293b, inset 0 0 0 4px var(--ticket-paper), inset 0 0 0 5px var(--ticket-line);
+  text-align: left;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  overflow: hidden;
+}
+.ui-ticket--1 {
+  --ticket-paper: #efe2c5;
+  --ticket-edge: #d7c39d;
+  --ticket-ink: #263e3e;
+  --ticket-muted: #705e45;
+  --ticket-gold: #816b47;
+  --ticket-line: #8e775c66;
+}
+.ui-ticket--2 {
+  --ticket-paper: #784c41;
+  --ticket-edge: #633c34;
+  --ticket-ink: #f8ead3;
+  --ticket-muted: #edceaa;
+  --ticket-gold: #e6c58e;
+  --ticket-line: #e2c29470;
+}
+.ui-ticket__body { position: relative; min-width: 0; padding: 18px 21px 20px; }
+.ui-ticket__masthead {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--ticket-line);
+  color: var(--ticket-gold); font-size: .66rem; letter-spacing: .08em;
+}
+.ui-ticket__masthead span:first-child { display: flex; align-items: center; gap: 6px; }
+.ui-ticket__masthead span:last-child { white-space: nowrap; }
+.ui-ticket__title-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 13px 0 14px; }
+.ui-ticket__kicker { display: block; color: var(--ticket-muted); font-size: .6rem; letter-spacing: .17em; }
+.ui-ticket .ui-ticket__title-row h3 {
+  margin: 4px 0 2px; color: var(--ticket-ink); font: 700 clamp(1.35rem, 4vw, 1.85rem)/1.2 Georgia, 'Songti SC', 'SimSun', serif; letter-spacing: .08em;
+}
+.ui-ticket__title-row p { margin: 0; color: var(--ticket-muted); font-size: .7rem; letter-spacing: .025em; }
+.ui-ticket__number { color: var(--ticket-gold); font: 700 1.55rem Georgia, serif; white-space: nowrap; }
+.ui-ticket__number span { font-weight: 400; }
+.ui-ticket__route { display: grid; grid-template-columns: auto minmax(35px, 1fr) auto; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--ticket-line); border-bottom: 1px solid var(--ticket-line); }
+.ui-ticket__route > div:last-child { text-align: right; }
+.ui-ticket__route small,
+.ui-ticket__details small,
+.ui-ticket__bottom small { display: block; color: var(--ticket-muted); font-size: .6rem; line-height: 1.4; letter-spacing: .05em; }
+.ui-ticket__route strong { display: block; margin-top: 3px; color: var(--ticket-ink); font: 700 1.28rem Georgia, 'Songti SC', 'SimSun', serif; letter-spacing: .1em; }
+.ui-ticket__route-line { display: flex; align-items: center; gap: 5px; color: var(--ticket-gold); font-size: .65rem; }
+.ui-ticket__route-line span { height: 1px; flex: 1; background: var(--ticket-line); }
+.ui-ticket__details { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(44px, .55fr) minmax(60px, .75fr); gap: 8px; padding: 13px 0 11px; }
+.ui-ticket__details > div { min-width: 0; }
+.ui-ticket__details strong { display: block; margin-top: 4px; color: var(--ticket-ink); font: 700 1rem/1.35 Georgia, 'Songti SC', 'SimSun', serif; overflow-wrap: anywhere; }
+.ui-ticket__bottom { display: flex; justify-content: space-between; align-items: end; gap: 8px; border-top: 1px solid var(--ticket-line); padding-top: 10px; }
+.ui-ticket__bottom > div { min-width: 0; }
+.ui-ticket__bottom strong { display: block; color: var(--ticket-ink); font: 600 .73rem/1.4 Georgia, serif; letter-spacing: .05em; overflow-wrap: anywhere; }
+.ui-ticket__bottom div > span { display: block; margin-top: 3px; color: var(--ticket-muted); font-size: .65rem; }
+.ui-ticket__status { flex-shrink: 0; border: 1px solid var(--ticket-gold); padding: 4px 7px; color: var(--ticket-gold); font: 700 .78rem Georgia, 'Songti SC', serif; letter-spacing: .1em; transform: rotate(-8deg); }
+.ui-ticket__status.is-checked { border: 2px double var(--ticket-gold); animation: ui-stamp-in .38s ease-out both; }
+.ui-ticket__seal { display: inline-flex; align-items: center; gap: 4px; margin-top: 8px; color: var(--ticket-gold); font-size: .64rem; }
+.ui-ticket__stub {
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 10px;
+  border-left: 1px dashed var(--ticket-gold); padding: 21px 9px;
+  background: linear-gradient(180deg, transparent, var(--ticket-edge)); color: var(--ticket-ink); text-align: center;
+}
+.ui-ticket__stub small { color: var(--ticket-muted); font-size: .56rem; line-height: 1.6; letter-spacing: .08em; }
+.ui-ticket__stub strong { color: var(--ticket-gold); font: 700 1.3rem Georgia, serif; }
+.ui-ticket__stub > span:last-of-type { font-size: .67rem; white-space: nowrap; }
+.ui-ticket__barcode { width: 72%; height: 52px; background: repeating-linear-gradient(90deg, var(--ticket-ink) 0 1px, transparent 1px 3px, var(--ticket-ink) 3px 5px, transparent 5px 8px); opacity: .8; }
+.ui-ticket__reverse { min-height: 235px; display: flex; flex-direction: column; justify-content: center; }
+.ui-ticket__reverse h3 { margin: 8px 0; color: var(--ticket-ink); font: 700 1.28rem Georgia, 'Songti SC', serif; }
+.ui-ticket__reverse p, .ui-ticket__reverse > small { color: var(--ticket-muted); font-size: .76rem; line-height: 1.7; }
+.ui-ticket__stamps { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin: 15px 0; }
+.ui-ticket__stamps > span { aspect-ratio: 1; display: grid; place-items: center; border: 1px dashed var(--ticket-gold); border-radius: 50%; color: var(--ticket-gold); font: .65rem Georgia, serif; }
+.ui-ticket__stamps img { width: 100%; height: 100%; object-fit: contain; }
+
+/* A check-in result is announced without changing when the ticket is saved. */
+.ui-check-instructions { margin: 0 0 12px; color: #6d5c43; font-size: .83rem; line-height: 1.7; }
+.ui-check-ticket { cursor: grab; }
+.ui-check-ticket:active { cursor: grabbing; }
+.game .guided-check .ui-check-selection { min-height: 44px; margin: 2px 0 8px; color: #68563a; }
+.game .guided-check .ticket-slot { position: relative; min-height: 54px; margin: 8px 0 12px; background: #a7834d; color: #fff9eb; border: 1px solid #886436; box-shadow: inset 0 0 0 3px #f0d4a040, 0 3px 8px #755c3625; }
+.game .guided-check .ticket-slot:hover { background: #93713f; }
+.ui-check-result { padding: 12px 14px; border: 1px solid #90a187; background: #dbe5cfb0; color: #284a3b; line-height: 1.6; }
+.ui-check-result strong, .ui-check-result span { display: block; }
+.ui-check-result span { margin-top: 3px; font-size: .82rem; }
+.guided-check > .ui-check-continue { width: 100%; margin-top: 12px; }
+@keyframes ui-stamp-in { from { opacity: 0; transform: rotate(-8deg) scale(1.35); } to { opacity: 1; transform: rotate(-8deg) scale(1); } }
+@keyframes ui-panel-in { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 700px) {
+  .game .panel-body { padding: 16px 15px 22px; }
+  .game .panel-head { padding: 11px 15px; }
+  .game .ticket-welcome { margin-bottom: 16px; padding-bottom: 14px; }
+  .game .ticket-prefs { margin: 17px 0; }
+  .game .ticket-custom { margin: 12px 0; }
+  .ui-ticket { grid-template-columns: minmax(0, 1fr) 67px; margin: 12px auto; }
+  .ui-ticket__body { padding: 14px 13px 15px; }
+  .ui-ticket__masthead { font-size: .58rem; letter-spacing: .025em; }
+  .ui-ticket__masthead svg { width: 13px; height: 13px; }
+  .ui-ticket__title-row { padding: 12px 0; }
+  .ui-ticket__title-row p { font-size: .62rem; }
+  .ui-ticket__number { font-size: 1.05rem; }
+  .ui-ticket__route { gap: 7px; padding: 10px 0; }
+  .ui-ticket__route strong { font-size: 1.06rem; }
+  .ui-ticket__details { grid-template-columns: minmax(0, 1.4fr) minmax(31px, .5fr) minmax(46px, .7fr); gap: 5px; }
+  .ui-ticket__details small { font-size: .52rem; letter-spacing: 0; }
+  .ui-ticket__details strong { font-size: .88rem; }
+  .ui-ticket__stub { padding: 16px 5px; }
+  .ui-ticket__stub strong { font-size: 1rem; }
+  .ui-ticket__stub small { font-size: .49rem; }
+  .ui-ticket__stub > span:last-of-type { font-size: .57rem; }
+  .ui-ticket__barcode { height: 42px; }
+  .ui-ticket__bottom strong { font-size: .65rem; }
+  .ui-ticket__bottom div > span { font-size: .58rem; }
+  .ui-ticket__status { font-size: .68rem; padding: 3px 4px; }
+  .ui-ticket__reverse { min-height: 195px; }
+  .ui-ticket__reverse h3 { font-size: 1rem; }
+}
+@media (max-width: 350px) {
+  .ui-ticket { grid-template-columns: minmax(0, 1fr) 52px; }
+  .ui-ticket__body { padding: 10px; }
+  .ui-ticket__masthead { padding-bottom: 6px; }
+  .ui-ticket__masthead span:last-child { font-size: .52rem; }
+  .ui-ticket__title-row { padding: 8px 0; }
+  .ui-ticket__number { display: none; }
+  .ui-ticket__route { padding: 7px 0; }
+  .ui-ticket__details { padding: 8px 0; }
+  .ui-ticket__bottom { padding-top: 7px; }
+  .ui-ticket__stub small:first-child { font-size: .42rem; }
+  .ui-ticket__stub > span:last-of-type { font-size: .48rem; }
+  .ui-check-instructions { margin-bottom: 5px; font-size: .77rem; line-height: 1.5; }
+  .game .guided-check .ui-check-selection { min-height: 40px; margin: 0 0 5px; }
+  .game .guided-check .ticket-slot { min-height: 46px; margin: 5px 0 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .game .ui-ticket__status.is-checked, .game .ticket-reveal, .game .panel { animation: none; }
+  .game .button, .game .machine-slot, .game .story-guide, .game .cover-ticket { transition: none; }
+}
+.game.reduced-motion .ui-ticket__status.is-checked,
+.game.reduced-motion .ticket-reveal,
+.game.reduced-motion .panel { animation: none; }
+.game.reduced-motion .button,
+.game.reduced-motion .machine-slot,
+.game.reduced-motion .story-guide,
+.game.reduced-motion .cover-ticket { transition: none; }
