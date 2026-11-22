@@ -1,0 +1,192 @@
+/**
+ * 竖屏皮肤（≤700px）
+ * -----------------------------------------------------------------------------
+ * 手机端不再“把电脑版缩小”，而是像一列夜行列车上的竖幅海报：
+ *  · 场景图铺满整块画布（不再左右留黑边，也不再在底部露出底色）
+ *  · 标题、热点、按钮换成衬线艺术字（见 typography.css）
+ *  · 热点标签改成黄铜铭牌，靠近屏幕边缘时自动向内收，不会被截断
+ *  · 底部引导压成一条细长的票根，导航用金字高亮
+ * 只覆盖视觉，不改任何交互与坐标。
+ */
+@media (max-width: 700px) {
+  /* ── 顶栏 ───────────────────────────────────────────── */
+  .game .topbar {
+    background: linear-gradient(180deg, #0e1a26f7, #0b1622f0);
+    border-bottom: 1px solid #c8a87533;
+    box-shadow: 0 6px 22px #04090f66;
+  }
+  .game .brand-name { font-size: 1rem; letter-spacing: .2em; color: #f6e9d2; }
+  .game .brand-name small { font-size: .42rem; color: #8fa1ad; letter-spacing: .2em; }
+  .game .header-actions .icon-button { color: #d8c9ae; }
+  .game .item-count { background: #b4894f; color: #10202b; }
+
+  /* ── 场景：铺满 + 金色描边 + 上下的暗角 ───────────────── */
+  .game .world .scene-stage { bottom: 0; }
+  .game .scene-stage .art-board { max-width: none; max-height: none; }
+  .game .scene-stage::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, #040b12a6 0%, #040b1200 22%, #040b1200 52%, #05101ac9 88%, #06121de6 100%);
+    box-shadow: inset 0 0 0 1px #c8a87526, inset 0 0 120px #030a12a8;
+    pointer-events: none; z-index: 4;
+  }
+  .game .scene-art { object-fit: cover; }
+  .game .scene-blur { opacity: .5; }
+
+  /* ── 返回 ────────────────────────────────────────────── */
+  .game .scene-back {
+    top: 12px; left: 12px;
+    min-height: 32px; padding: 3px 11px 3px 8px;
+    background: #0b1620c9; border: 1px solid #c8a87552; border-radius: 16px;
+    color: #e6d5b6; font-family: var(--font-body); font-size: .76rem; letter-spacing: .04em;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 14px #040b12a6;
+  }
+  .game .scene-back svg { width: 13px; height: 13px; }
+
+  /* ── 标题：海报头 ────────────────────────────────────── */
+  .game .world > .scene-caption,
+  .game .world > .scene-caption:has(~ .scene-back) {
+    top: 54px; left: 18px; right: 18px; max-width: none;
+    padding: 4px 14px 18px 0;
+    background: radial-gradient(130% 150% at 0% 0%, #030d17d9 0%, #030d17a8 42%, transparent 74%);
+    text-shadow: 0 2px 14px #03101bd9, 0 0 2px #00000080;
+  }
+  .game .scene-caption .eyebrow {
+    display: flex; align-items: center; gap: 8px;
+    font-size: .68rem; letter-spacing: .14em; color: #dcc394;
+  }
+  .game .scene-caption .eyebrow i { width: 16px; height: 1px; background: #c8a875cc; }
+  .game .scene-caption h1 {
+    font-size: 1.52rem; margin: 7px 0 3px; color: #fdf4de;
+    letter-spacing: .16em; line-height: 1.3;
+  }
+  .game .scene-caption p {
+    font-size: .7rem; letter-spacing: .08em; color: #b3a186; margin: 0; opacity: .9;
+  }
+
+  /* ── 热点：黄铜铭牌 ──────────────────────────────────── */
+  .game .hotspot { filter: drop-shadow(0 4px 9px #02090fa6); }
+  .game .hotspot-ring {
+    width: 30px; height: 30px;
+    background:
+      radial-gradient(circle at 50% 46%, #16241d 0%, #0d1714 62%, #23301f 100%);
+    border: 1px solid #d5b07aaa;
+    box-shadow: 0 0 0 3px #06100d99, inset 0 0 6px #000000cc, 0 0 14px #dfb26a2e;
+  }
+  .game .hotspot-ring > span {
+    width: 6px; height: 6px; background: #e8c483;
+    box-shadow: 0 0 8px #e8c483cc;
+  }
+  .game .hotspot-label {
+    margin-top: 7px; padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid #c8a87573;
+    background: linear-gradient(180deg, #12312ae8, #0b211ceb);
+    color: #f2ddb4;
+    font-size: .72rem; letter-spacing: .08em; line-height: 1.35;
+    box-shadow: 0 4px 12px #040c14a6, inset 0 0 0 1px #c8a8751f;
+    max-width: 132px;
+  }
+  /* 靠近屏幕左右边缘时把铭牌往里收，避免被裁掉 */
+  .game .hotspot-edge-right .hotspot-label { left: auto; right: -6px; transform: none; }
+  .game .hotspot-edge-left .hotspot-label { left: -6px; right: auto; transform: none; }
+  .game .hotspot-primary .hotspot-ring {
+    width: 42px; height: 42px;
+    background: radial-gradient(circle at 38% 32%, #fbe9c6, #dcb577 58%, #b98f4d);
+    border: 1px solid #fff3d4;
+    box-shadow: 0 0 0 5px #f0c88526, 0 0 26px #f3c37775;
+  }
+  .game .hotspot-primary .hotspot-ring > span { width: 9px; height: 9px; background: #5d3d17; box-shadow: none; }
+  .game .hotspot-primary .hotspot-label {
+    background: linear-gradient(180deg, #f8e6bc, #ddb97d);
+    border-color: #ffefcd; color: #23301f;
+    font-size: .8rem; font-weight: 400; letter-spacing: .1em;
+    padding: 5px 13px; max-width: 150px;
+    box-shadow: 0 5px 14px #040c14a6, inset 0 0 0 1px #8a6a3a2e;
+  }
+  .game .hotspot-done .hotspot-ring {
+    background: radial-gradient(circle at 40% 34%, #2f4a3b, #14261f 72%);
+    border-color: #a6bd97cc;
+  }
+
+  /* ── 底部引导：一张细票根 ────────────────────────────── */
+  .game .scene-controls { bottom: 8px; width: calc(100% - 16px); gap: 7px; }
+  .game .scene-controls .journey-cue {
+    display: grid; grid-template-columns: 1fr; gap: 7px;
+    padding: 8px 9px;
+    border: 1px solid #c8a87542; border-radius: 6px;
+    background: linear-gradient(180deg, #0d211cf2, #091a16f8);
+    box-shadow: 0 14px 32px #02070cc4, inset 0 0 0 1px #c8a8751a;
+  }
+  .game .journey-cue-copy { gap: 8px; }
+  .game .journey-cue-copy svg { width: 14px; height: 14px; color: #c8a875; }
+  .game .journey-cue-copy p {
+    font-size: .75rem; line-height: 1.45; color: #d6c3a1; letter-spacing: .04em;
+  }
+  .game .scene-controls .story-guide {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 44px; padding: 5px 14px; border-radius: 4px;
+    background: linear-gradient(100deg, #f5dfb3, #dbba80 58%, #c9a264);
+    border: 1px solid #ffedc6;
+    box-shadow: inset 0 1px 0 #fff9eeaa, inset 0 -2px 0 #8a612f3a, 0 8px 18px #02070c99;
+    color: #26301a;
+  }
+  .game .scene-controls .story-guide small {
+    margin: 0; font-size: .58rem; letter-spacing: .24em; color: #6d5533; opacity: .8;
+  }
+  .game .scene-controls .story-guide strong {
+    font-size: 1rem; letter-spacing: .1em; font-weight: 400; margin: 0;
+  }
+  .game .scene-controls .story-guide svg { display: none; }
+
+  /* ── 底部导航 ────────────────────────────────────────── */
+  .game .bottom-bar {
+    background: linear-gradient(180deg, #0d1b27f7, #081219);
+    border-top: 1px solid #c8a87530;
+  }
+  .game .bottom-bar nav > button { color: #8294a0; font-size: .7rem; letter-spacing: .08em; }
+  .game .bottom-bar nav > button.active { color: #ecd09c; }
+  .game .bottom-bar nav > button.active svg { filter: drop-shadow(0 0 7px #e8c17e55); }
+  .game .bottom-bar nav > button.active:after {
+    width: 16px; height: 2px;
+    background: linear-gradient(90deg, transparent, #e4c089, transparent);
+    box-shadow: 0 0 10px #e4c08988;
+  }
+  .game .hint-button { color: #cbb68f; }
+  .game .hint-button span { font-size: .58rem; letter-spacing: .1em; }
+
+  /* ── 第三幕：区域条与提示 ────────────────────────────── */
+  .game .scene-controls .compartment-nav {
+    background: #0c211cf2; border: 1px solid #c8a87536; border-radius: 6px;
+    gap: 2px; padding: 3px;
+  }
+  .game .compartment-nav > button { color: #9fb0a8; font-size: .7rem; letter-spacing: .06em; border: 0; border-radius: 4px; min-height: 36px; }
+  .game .compartment-nav > button.active { color: #20301f; background: linear-gradient(180deg, #efd7a6, #d3ad72); }
+  .game .exploration-help { font-size: .68rem; letter-spacing: .12em; color: #9c8f78; }
+
+  /* ── 对白：字幕牌 ────────────────────────────────────── */
+  .game .dialogue-box {
+    border-top: 1px solid #c8a87580;
+    background: linear-gradient(180deg, #0d1a20f7, #121a1af7);
+  }
+  .game .dialogue-text { font-size: .95rem; letter-spacing: .03em; }
+  .game .speaker-name strong { font-size: 1rem; letter-spacing: .1em; color: #f0dcb4; }
+
+  /* ── 面板与提示 ──────────────────────────────────────── */
+  .game .panel { border-radius: 6px; }
+  .game .panel-head h2 { letter-spacing: .14em; font-weight: 400; }
+  .game .panel-head .eyebrow { letter-spacing: .16em; color: #a08a63; }
+  .game .panel-body h3 { letter-spacing: .08em; font-weight: 400; }
+  .game .toast { border: 1px solid #c8a87566; background: #10231df5; box-shadow: 0 10px 30px #02070ca6; }
+  .game .toast > span { font-size: .8rem; letter-spacing: .04em; color: #f0dfbe; }
+}
+
+/* 更窄的机型再收一档 */
+@media (max-width: 380px) {
+  .game .scene-caption h1 { font-size: 1.38rem; letter-spacing: .16em; }
+  .game .hotspot-label { font-size: .68rem; max-width: 118px; }
+  .game .scene-controls .story-guide strong { font-size: .94rem; }
+  .game .bottom-bar nav > button { font-size: .62rem; }
+}

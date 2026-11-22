@@ -70,7 +70,9 @@ function SceneStage({sceneId,onHotspot,hints,locked,onGuide,guideLabel}: StagePr
 
   const imageKey=scene.art+(mobile?'Mobile':'');
   const ratio=mobile?9/16:16/9;
-  const width=Math.min(size.width,size.height*ratio);
+  // 竖屏铺满（cover）：只按上下各裁一点，不再左右留黑边；
+  // 热点坐标是相对这块画布的百分比，所以裁切后仍然对得上物件。
+  const width=mobile?Math.max(size.width,size.height*ratio):Math.min(size.width,size.height*ratio);
   const height=width/ratio;
   return (
     <div className={`scene-stage scene-${sceneId} act-${scene.act} ${locked?'stage-locked':''} ${hints?'show-hints':''}`} ref={box}>

@@ -1,0 +1,131 @@
+/**
+ * 字体层级
+ * -----------------------------------------------------------------------------
+ * 标题、热点标签、按钮、导航这类“招牌字”用随包的中文衬线艺术字（站酷小薇，
+ * OFL 授权，已按实际用到的汉字子集化，259 KB woff2）；正文保持系统无衬线，
+ * 保证长段落和小字号下的可读性。
+ *
+ * 字体文件：src/ui-refresh/fonts/zcool-xiaowei.woff2
+ * 授权：SIL Open Font License 1.1（见 docs/字体授权.md）
+ */
+@font-face {
+  font-family: 'Etie Display';
+  src: url('./fonts/zcool-xiaowei.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: 'Etie Display', 'Songti SC', 'STSong', 'SimSun', 'Noto Serif CJK SC', serif;
+  --font-body: var(--ui-font, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif);
+}
+
+/* ── 招牌字：片名、场景标题、热点、按钮、导航、面板标题 ───────────────── */
+.game .brand-name,
+.game .chapter-marker,
+.game .scene-caption .eyebrow,
+.game .scene-caption h1,
+.game .scene-caption p,
+.game .hotspot-label,
+.game .story-guide small,
+.game .story-guide strong,
+.game .journey-cue-copy p,
+.game .bottom-bar nav > button,
+.game .compartment-nav > button,
+.game .exploration-help,
+.game .hint-button span,
+.game .saved-status > span,
+.game .ending-card h2,
+.game .ending-card .eyebrow,
+.game .opening h1,
+.game .opening-credit,
+.game .opening-route span,
+.game .cover-ticket > span,
+.game .cover-ticket b,
+.game .panel-head h2,
+.game .panel-head .eyebrow,
+.game .panel-body h3,
+.game .panel-body h4,
+.game .panel-body h5,
+.game .dialogue-text,
+.game .speaker-name strong,
+.game .dialogue-next span,
+.game .dialogue-choices > button,
+.game .toast > span,
+.game .complete,
+.game .button {
+  font-family: var(--font-display);
+}
+
+/* 正文与表单保持无衬线 */
+.game .panel-body p,
+.game .panel-body li,
+.game .panel-body label,
+.game .panel-body input,
+.game .panel-body textarea,
+.game .panel-body select,
+.game .panel-body dl,
+.game .panel-body small,
+.game .journal-paper blockquote p,
+.game .history p,
+.game .job-copy,
+.game .ticket-note {
+  font-family: var(--font-body);
+}
+
+/* 招牌字的细节：字距、字重、刻印感 */
+.game .scene-caption h1,
+.game .panel-head h2,
+.game .ending-card h2,
+.game .opening h1 {
+  font-weight: 400;
+  letter-spacing: .12em;
+}
+
+.game .brand-name {
+  letter-spacing: .2em;
+  font-size: 1.08rem;
+}
+
+.game .brand-name small {
+  font-family: var(--font-body);
+  letter-spacing: .18em;
+  font-weight: 500;
+}
+
+.game .chapter-marker > span {
+  letter-spacing: .14em;
+}
+
+.game .hotspot-label {
+  letter-spacing: .06em;
+}
+
+.game .story-guide strong,
+.game .story-guide small {
+  letter-spacing: .08em;
+}
+
+.game .bottom-bar nav > button {
+  letter-spacing: .1em;
+}
+
+.game .dialogue-text {
+  letter-spacing: .02em;
+  line-height: 1.95;
+}
+
+/* 按钮统一走招牌字，但保留原有尺寸节奏 */
+.game .button {
+  letter-spacing: .06em;
+}
+
+/* 小字号下衬线会偏细，给招牌字补一点抗锯齿 */
+.game .scene-caption h1,
+.game .panel-head h2,
+.game .ending-card h2,
+.game .hotspot-label,
+.game .story-guide strong {
+  -webkit-font-smoothing: antialiased;
+}
